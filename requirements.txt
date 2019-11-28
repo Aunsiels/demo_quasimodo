@@ -2,3 +2,4 @@ flask-testing
 selenium
 pytest
 flask
+flask-bootstrap

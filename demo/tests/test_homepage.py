@@ -22,7 +22,7 @@ class TestHomepage(LiveServerTestCase):
         self.assertEqual(response.code, 200)
 
     def test_title(self):
-        self.browser.get("/")
+        self.browser.get(self.get_server_url() + "/")
         self.assertTrue("quasimodo" in self.browser.title.lower())
 
     @classmethod
@@ -34,7 +34,7 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.browser.quit()
+       cls.browser.quit()
 
 
 if __name__ == '__main__':
