@@ -1,0 +1,4 @@
+flask-testing
+selenium
+pytest
+flask
