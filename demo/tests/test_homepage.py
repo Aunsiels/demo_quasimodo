@@ -25,6 +25,16 @@ class TestHomepage(LiveServerTestCase):
         self.browser.get(self.get_server_url() + "/")
         self.assertTrue("quasimodo" in self.browser.title.lower())
 
+    def test_click_home(self):
+        self.browser.get(self.get_server_url() + "/")
+        self.browser.find_elements_by_link_text("Home")[0].click()
+        self.assertEqual(self.browser.current_url, self.get_server_url() + "/")
+
+    def test_click_explorer(self):
+        self.browser.get(self.get_server_url() + "/")
+        self.browser.find_elements_by_link_text("Explorer")[0].click()
+        self.assertEqual(self.browser.current_url, self.get_server_url() + "/explorer/")
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.browser = webdriver.Firefox()

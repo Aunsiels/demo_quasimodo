@@ -1,5 +1,12 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}QUASIMODO - Index{% endblock %}
+
+{% block title %}
+    {% if title_page %}
+        QUASIMODO - {{ title_page }}
+    {% else %}
+        QUASIMODO
+    {% endif %}
+{% endblock %}
 
 {% block navbar %}
 <nav class="navbar navbar-default">
@@ -16,6 +23,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="{{ url_for('homepage.home') }}">Home</a></li>
+                    <li><a href="{{ url_for('explorer.home') }}">Explorer</a></li>
                 </ul>
             </div>
         </div>
@@ -23,4 +31,10 @@
 {% endblock %}
 
 {% block content %}
+    {% block inner_content %}
+    {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://kit.fontawesome.com/9a16929992.js" crossorigin="anonymous"></script>
 {% endblock %}

@@ -3,3 +3,6 @@ selenium
 pytest
 flask
 flask-bootstrap
+flask-sqlalchemy
+flask-migrate
+flask-wtf

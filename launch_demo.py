@@ -1,3 +1,3 @@
-from demo import create_app
+from demo import create_app, db
 
 app = create_app()
