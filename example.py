@@ -82,5 +82,5 @@ def phantomjs_example():
 
 
 if __name__ == '__main__':
-    firefox_example()
+    chrome_example()
 
