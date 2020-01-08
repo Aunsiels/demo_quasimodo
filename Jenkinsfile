@@ -20,4 +20,7 @@ pipeline {
     }
 
   }
+  environment {
+    DISPLAY = ':99'
+  }
 }
