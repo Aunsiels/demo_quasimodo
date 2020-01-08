@@ -7,11 +7,13 @@ from demo import create_app
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
+from pyvirtualdisplay import Display
 
 
 class TestHomepage(LiveServerTestCase):
 
     browser = None
+    display = None
 
     def create_app(self):
         app = create_app(True)
@@ -38,6 +40,8 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
+        cls.display = Display(visible=0, size=(800, 600))
+        cls.display.start()
         options = Options()
         options.headless = True
         cls.browser = webdriver.Firefox(options=options)
@@ -48,6 +52,7 @@ class TestHomepage(LiveServerTestCase):
     @classmethod
     def tearDownClass(cls) -> None:
        cls.browser.quit()
+       cls.display.stop()
 
 
 if __name__ == '__main__':

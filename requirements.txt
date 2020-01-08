@@ -7,3 +7,4 @@ flask-sqlalchemy
 flask-migrate
 flask-wtf
 flask_fontawesome
+pyvirtualdisplay

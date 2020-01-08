@@ -16,8 +16,16 @@ RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckod
     && tar xzf geckodriver*.tar.gz \
     && mv geckodriver /usr/bin/geckodriver
 
-COPY requirements.txt requirements.txt
-
 RUN pip3 install --upgrade pip
 
-RUN pip3 install -r requirements.txt
+RUN pip3 install \
+    flask-testing \
+    selenium \
+    pytest \
+    flask \
+    flask-bootstrap \
+    flask-sqlalchemy \
+    flask-migrate \
+    flask-wtf \
+    flask_fontawesome \
+    pyvirtualdisplay
