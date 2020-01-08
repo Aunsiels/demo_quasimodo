@@ -40,9 +40,10 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.display = Display(visible=0, size=(800, 600))
+        cls.display = Display(visible=0, size=(1920, 1200))
         cls.display.start()
         cls.browser = webdriver.Firefox()
+        cls.browser.set_page_load_timeout(60)
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()
