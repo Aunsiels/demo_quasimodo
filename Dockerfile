@@ -52,6 +52,10 @@ RUN pip3 install \
     flask-migrate \
     flask-wtf \
     flask_fontawesome \
-    pyvirtualdisplay
+    pyvirtualdisplay \
+    pytest-cov \
+    pytest-profiling \
+    pylint \
+    pycodestyle
 
 RUN mkdir /.cache && mkdir /.cache/dconf && chmod -R 777 /.cache/dconf
