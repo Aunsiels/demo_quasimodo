@@ -6,3 +6,4 @@ flask-bootstrap
 flask-sqlalchemy
 flask-migrate
 flask-wtf
+flask_fontawesome
