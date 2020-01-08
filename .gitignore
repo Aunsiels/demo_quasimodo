@@ -2,3 +2,7 @@ venv/
 .idea/
 geckodriver.log
 *pycache*
+demo/app.db
+demo/test-reports/
+demo/testsapp_test.db
+test-reports/

@@ -1,0 +1,10 @@
+musician	make	music	 	0	0.9999999991040696	musicians make music x#x12 // musicians make / invent music x#x1	0.010969917368187932	0.04213201975478069
+soccer	be called	football	sometimes x#x3	0	0.9999999989282742	soccer is called football in england x#x2 // soccer is called football in europe x#x1 // soccer is sometimes called football and vise verse x#x1 // soccer is called football x#x2 // soccer is sometimes called football- x#x2	0.004697278070332859	0.13714073908636729
+graffiti	has_property	art	 	0	0.9999999985364028	graffiti is art x#x8 // the graffiti are art x#x1	0.0230939033683399	0.013540911384655116
+snow	has_property	ice	 	0	0.91465465465	snow is white but ice clear x#x1 // snow is soft and ice hard x#x1 // snow is ice x#x4 // snow is white and ice transparent x#x1 // snow is white and ice clear x#x3 // snow is white but ice transparent x#x1	0.006408946156257619	0.08624298024701132
+organism	need	water	 	0	0.89846546546546	organisms need water x#x8 // the organisms need water x#x1 // organisms need water and energy x#x2	0.005565696622057317	0.01446295730002223
+cloud	has_color	yellow	 	0	0.88465465465	clouds are yellow x#x6 // clouds is yellow x#x2 // the clouds are yellow x#x1	0.002735997130261775	0.0003547524856899854
+swimming	has_property	fun	 	0	0.874654654	swimming is fun x#x10 // swimming so is fun x#x1	0.02357768544933198	0.005594061824326828
+heat	bend	light	 	0	0.86454546546	heat bend light x#x10	0.0025589112459098507	0.11207026846860363
+fish	live in	water	 	0	0.8546546546546505	fish live in water x#x4 // fishes live in water x#x3 // fishes adapt to live in water x#x1	0.0036500721722362473	0.020160006350215746
+neon	produce	light	 	0	0.8454654654654454	neon produce light x#x6 // neon and other noble gases produce light x#x2	0.014397593607600167	0.039363374210104975
