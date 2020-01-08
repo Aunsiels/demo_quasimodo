@@ -50,10 +50,7 @@ def firefox_example():
     logging.info('Prepared firefox profile..')
 
     # browser = webdriver.Firefox(firefox_profile=firefox_profile)
-    try:
-        browser = webdriver.Firefox()
-    except TimeoutException:
-        pass
+    browser = webdriver.Firefox()
     logging.info('Initialized firefox browser..')
 
     browser.get(BASE_URL)
