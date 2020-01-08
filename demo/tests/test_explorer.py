@@ -120,9 +120,16 @@ class TestExplorer(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.display = Display(visible=0, size=(1920, 1200))
+        cls.display = Display(visible=0, size=(800,600))
         cls.display.start()
-        cls.browser = webdriver.Chrome()
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--no-sandbox')
+
+        chrome_options.add_experimental_option('prefs', {
+            'download.default_directory': os.getcwd(),
+            'download.prompt_for_download': False,
+        })
+        cls.browser = webdriver.Chrome(chrome_options=chrome_options)
 
     @classmethod
     def tearDownClass(cls) -> None:
