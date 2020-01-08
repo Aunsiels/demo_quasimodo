@@ -8,3 +8,7 @@ flask-migrate
 flask-wtf
 flask_fontawesome
 pyvirtualdisplay
+pytest-cov
+pytest-profiling
+pylint
+pycodestyle
