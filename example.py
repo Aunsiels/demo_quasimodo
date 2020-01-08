@@ -3,6 +3,7 @@ import logging
 
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -49,7 +50,10 @@ def firefox_example():
     logging.info('Prepared firefox profile..')
 
     # browser = webdriver.Firefox(firefox_profile=firefox_profile)
-    browser = webdriver.Firefox()
+    try:
+        browser = webdriver.Firefox()
+    except TimeoutException:
+        pass
     logging.info('Initialized firefox browser..')
 
     browser.get(BASE_URL)
