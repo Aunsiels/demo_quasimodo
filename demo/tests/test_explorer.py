@@ -95,15 +95,27 @@ class TestExplorer(LiveServerTestCase):
         self.check_if_is_sorted_column(7)
 
     def check_if_is_sorted_column(self, column_number, reverse=False):
+        column_values = self.get_column_values(column_number)
+        column_values = [float(x) for x in column_values]
+        self.assertEqual(column_values, sorted(column_values, reverse=reverse))
+
+    def get_column_values(self, column_number):
         rows = self.browser.find_elements_by_xpath("//table//tr")
         column_values = []
         for row in rows:
             tds = row.find_elements_by_tag_name("td")
             if len(tds) == 0:
                 continue
-            column_values.append(float(tds[column_number].text))
-        print(column_values)
-        self.assertEqual(column_values, sorted(column_values, reverse=reverse))
+            column_values.append(tds[column_number].text)
+        return column_values
+
+    def test_search_by_subject(self):
+        self.browser.get(self.get_server_url() + "/explorer/search")
+        subject = self.browser.find_element_by_name("subject")
+        subject.send_keys("snow")
+        self.browser.find_element_by_name("search").click()
+        subjects_on_page = self.get_column_values(0)
+        self.assertEqual(set(subjects_on_page), {"snow"})
 
     @classmethod
     def setUpClass(cls) -> None:
