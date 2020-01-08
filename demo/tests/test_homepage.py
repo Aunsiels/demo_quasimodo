@@ -1,4 +1,5 @@
 import unittest
+import os
 from urllib.request import urlopen
 
 from flask_testing import LiveServerTestCase
