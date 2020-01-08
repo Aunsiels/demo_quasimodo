@@ -39,3 +39,5 @@ RUN pip3 install \
     flask-wtf \
     flask_fontawesome \
     pyvirtualdisplay
+
+RUN mkdir /.cache && mkdir /.cache/dconf && chmod +rw /.cache/dconf
