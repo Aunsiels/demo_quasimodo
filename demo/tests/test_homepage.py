@@ -6,7 +6,6 @@ from flask_testing import LiveServerTestCase
 from demo import create_app
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from pyvirtualdisplay import Display
 
 
@@ -42,7 +41,7 @@ class TestHomepage(LiveServerTestCase):
     def setUpClass(cls) -> None:
         cls.display = Display(visible=0, size=(1920, 1200))
         cls.display.start()
-        cls.browser = webdriver.Firefox()
+        cls.browser = webdriver.Chrome()
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()

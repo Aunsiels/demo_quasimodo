@@ -7,7 +7,6 @@ from flask_testing import LiveServerTestCase
 from demo import create_app, db, Config
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from pyvirtualdisplay import Display
 
 from demo.models.fact import add_all_facts_to_db, read_facts
@@ -123,7 +122,7 @@ class TestExplorer(LiveServerTestCase):
     def setUpClass(cls) -> None:
         cls.display = Display(visible=0, size=(1920, 1200))
         cls.display.start()
-        cls.browser = webdriver.Firefox()
+        cls.browser = webdriver.Chrome()
 
     @classmethod
     def tearDownClass(cls) -> None:
