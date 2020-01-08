@@ -13,5 +13,11 @@ pipeline {
       }
     }
 
+    stage('Static Tests') {
+      steps {
+        echo 'Static Tests'
+      }
+    }
+
   }
 }
