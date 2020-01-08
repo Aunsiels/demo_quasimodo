@@ -42,9 +42,7 @@ class TestHomepage(LiveServerTestCase):
     def setUpClass(cls) -> None:
         cls.display = Display(visible=0, size=(800, 600))
         cls.display.start()
-        options = Options()
-        options.headless = True
-        cls.browser = webdriver.Firefox(options=options)
+        cls.browser = webdriver.Firefox()
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()

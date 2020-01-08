@@ -123,9 +123,7 @@ class TestExplorer(LiveServerTestCase):
     def setUpClass(cls) -> None:
         cls.display = Display(visible=0, size=(800, 600))
         cls.display.start()
-        options = Options()
-        options.headless = True
-        cls.browser = webdriver.Firefox(options=options)
+        cls.browser = webdriver.Firefox()
 
     @classmethod
     def tearDownClass(cls) -> None:
