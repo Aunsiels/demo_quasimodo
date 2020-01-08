@@ -7,6 +7,7 @@ from flask_testing import LiveServerTestCase
 from demo import create_app, db, Config
 
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 from demo.models.fact import add_all_facts_to_db, read_facts
 
@@ -119,7 +120,9 @@ class TestExplorer(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.browser = webdriver.Firefox()
+        options = Options()
+        options.headless = True
+        cls.browser = webdriver.Firefox(options=options)
 
     @classmethod
     def tearDownClass(cls) -> None:

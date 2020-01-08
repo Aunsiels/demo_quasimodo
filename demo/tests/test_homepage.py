@@ -6,6 +6,7 @@ from flask_testing import LiveServerTestCase
 from demo import create_app
 
 from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
 
 
 class TestHomepage(LiveServerTestCase):
@@ -37,7 +38,9 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.browser = webdriver.Firefox()
+        options = Options()
+        options.headless = True
+        cls.browser = webdriver.Firefox(options=options)
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()
