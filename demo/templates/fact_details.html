@@ -18,7 +18,24 @@
         </tr>
         <tr>
             <th>Modality</th>
-            <td>{{ fact.modality }}</td>
+            <td>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Modality</th>
+                            <th>Occurrences</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for modality in fact.modality %}
+                        <tr>
+                            <td>{{ modality[0] }}</td>
+                            <td>{{ modality[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
         </tr>
         <tr>
             <th>Polarity</th>

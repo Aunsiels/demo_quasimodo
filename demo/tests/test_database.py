@@ -37,7 +37,7 @@ class TestDatabase(LiveServerTestCase):
         self.assertEqual(self.first_fact.object, "music")
 
     def test_contains_modality(self):
-        self.assertEqual(self.first_fact.modality, "")
+        self.assertEqual(self.first_fact.modality, [])
 
     def test_contains_negativity(self):
         self.assertFalse(self.first_fact.is_negative)
@@ -53,6 +53,9 @@ class TestDatabase(LiveServerTestCase):
 
     def test_contains_examples(self):
         self.assertEqual(len(self.first_fact.examples), 2)
+
+    def test_contains_examples_json(self):
+        self.assertTrue(isinstance(self.first_fact.examples_json, str))
 
     def test_examples_have_text(self):
         self.assertEqual(self.first_fact.examples[0][0], "musicians make music")

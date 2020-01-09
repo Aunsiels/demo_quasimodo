@@ -14,7 +14,8 @@ class Fact(db.Model):
     subject = db.Column(db.String(ELEMENTS_SIZE), index=True)
     predicate = db.Column(db.String(ELEMENTS_SIZE), index=True)
     object = db.Column(db.String(ELEMENTS_SIZE), index=True)
-    modality = db.Column(db.String(LONG_ELEMENTS_SIZE), index=True)
+    __modality = []
+    __modality_json = db.Column(db.String(LONG_ELEMENTS_SIZE), index=True)
     is_negative = db.Column(db.Boolean)
     plausibility = db.Column(db.Float)
     typicality = db.Column(db.Float)
@@ -30,7 +31,6 @@ class Fact(db.Model):
             self.__examples = json.loads(self.__examples_json)
             return self.__examples
 
-
     @examples.setter
     def examples(self, examples):
         self.__examples = examples
@@ -45,27 +45,66 @@ class Fact(db.Model):
         self.__examples = json.loads(examples_json)
         self.__examples_json = examples_json
 
+    @property
+    def modality(self):
+        if self.__modality:
+            return self.__modality
+        else:
+            self.__modality = json.loads(self.__modality_json)
+            return self.__modality
+
+    @modality.setter
+    def modality(self, modality):
+        self.__modality = modality
+        self.__modality_json = json.dumps(modality)
+
+    @property
+    def modality_sentences(self):
+        return ", ".join([x[0] for x in self.modality])
+
+    @property
+    def modality_json(self):
+        return self.__modality_json
+
+    @modality_json.setter
+    def modality_json(self, modality_json):
+        self.__modality = json.loads(modality_json)
+        self.__modality_json = modality_json
+
     @classmethod
     def from_line(cls, line):
         line = line.strip().split("\t")
         # There is a small problem in formatting
-        modificator = 0 if len(line) == 9 else 1
+        modifier = 0 if len(line) == 9 else 1
         examples = cls.get_examples_from_line(line)
+        modalities = cls.get_modalities_from_line(line)
         return Fact(subject=line[0],
                     predicate=line[1],
                     object=line[2],
-                    modality=line[3].strip(),
+                    modality=modalities,
                     is_negative=line[4] == "1",
                     plausibility=float(line[5]),
-                    typicality=float(line[7 - modificator]),
-                    saliency=float(line[8 - modificator]),
+                    typicality=float(line[7 - modifier]),
+                    saliency=float(line[8 - modifier]),
                     examples=examples)
 
     @classmethod
     def get_examples_from_line(cls, line):
         if len(line) != 9:
             return []
-        raw_examples_tuples = [example.split(" x#x") for example in line[6].split(" // ")]
+        examples = cls.get_multiple_sentence_column(line, 6)
+        return examples
+
+    @classmethod
+    def get_modalities_from_line(cls, line):
+        examples = cls.get_multiple_sentence_column(line, 3)
+        return examples
+
+    @classmethod
+    def get_multiple_sentence_column(cls, line, column_number):
+        if not line[column_number].strip():
+            return []
+        raw_examples_tuples = [example.split(" x#x") for example in line[column_number].split(" // ")]
         examples = [(example[0], int(example[1])) for example in raw_examples_tuples]
         return examples
 
