@@ -1,7 +1,7 @@
 import json
 import sys
 
-from demo import db
+from quasimodo_website import db
 
 LONG_ELEMENTS_SIZE = 8192
 

@@ -5,10 +5,10 @@ from flask import current_app as app
 from sqlalchemy import desc, asc
 from werkzeug.utils import redirect
 
-from demo import db
-from demo.explorer import bp
-from demo.models.fact import Fact, read_facts, add_all_facts_to_db
-from demo.models.search_form import SearchForm
+from quasimodo_website import db
+from quasimodo_website.explorer import bp
+from quasimodo_website.models.fact import Fact, read_facts, add_all_facts_to_db
+from quasimodo_website.models.search_form import SearchForm
 
 
 @bp.route("/")

@@ -7,31 +7,35 @@ PYLINT ?= pylint
 PYTHONPATH = PYTHONPATH:$(pwd)
 
 test-code:
-	$(PYTEST) --showlocals -v demo
+	$(PYTEST) --showlocals -v quasimodo_website
 
 test-code-xml:
-	$(PYTEST) --showlocals -v demo --junit-xml test-reports/results.xml
+	$(PYTEST) --showlocals -v quasimodo_website --junit-xml test-reports/results.xml
 
 test-code-profiling:
-	$(PYTEST) --showlocals -v demo --profile
+	$(PYTEST) --showlocals -v quasimodo_website --profile
 
 test-code-profiling-svg:
-	$(PYTEST) --showlocals -v demo --profile-svg
+	$(PYTEST) --showlocals -v quasimodo_website --profile-svg
 
 test-coverage:
 		rm -rf coverage .coverage
-		$(PYTEST) demo --showlocals -v --cov=pyformlang --cov-report=html:coverage
+		$(PYTEST) quasimodo_website --showlocals -v --cov=pyformlang --cov-report=html:coverage
 
 test-coverage-xml:
 		rm -rf reports/coverage.xml
-		$(PYTEST) demo --showlocals -v --cov=pyformlang --cov-report=xml:reports/coverage.xml
+		$(PYTEST) quasimodo_website --showlocals -v --cov=pyformlang --cov-report=xml:reports/coverage.xml
 
 style-check:
-	$(PYLINT) --rcfile=pylint.cfg demo > pylint.report || true
-	pycodestyle demo > pep8.report || true
+	$(PYLINT) --rcfile=pylint.cfg quasimodo_website > pylint.report || true
+	pycodestyle quasimodo_website > pep8.report || true
+
+build:
+	rm dist/*
+	$(PYTHON) setup.py sdist bdist_wheel
 
 clean:
 	rm -rf coverage .coverage
 	$(MAKE) -C doc clean
 
-.PHONY: clean
+.PHONY: clean build

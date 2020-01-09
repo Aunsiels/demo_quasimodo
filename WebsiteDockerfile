@@ -39,4 +39,4 @@ COPY ./dist/*.whl /
 
 RUN pip3 install *.whl
 
-CMD echo "Starting Server..." && waitress-serve --call 'demo:create_app'
+CMD echo "Starting Server..." && waitress-serve --call 'quasimodo_website:create_app'

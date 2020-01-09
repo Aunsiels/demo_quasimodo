@@ -4,7 +4,7 @@ from urllib.request import urlopen
 
 from flask_testing import LiveServerTestCase
 
-from demo import create_app
+from quasimodo_website import create_app
 
 from selenium import webdriver
 from pyvirtualdisplay import Display

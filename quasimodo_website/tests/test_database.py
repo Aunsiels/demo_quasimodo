@@ -3,8 +3,8 @@ import unittest
 
 from flask_testing import LiveServerTestCase
 
-from demo import create_app, db, Config
-from demo.models.fact import read_facts, Fact, add_all_facts_to_db
+from quasimodo_website import create_app, db, Config
+from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
 
 class TestDatabase(LiveServerTestCase):

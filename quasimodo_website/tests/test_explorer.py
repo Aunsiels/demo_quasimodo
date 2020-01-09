@@ -4,12 +4,12 @@ from urllib.request import urlopen
 
 from flask_testing import LiveServerTestCase
 
-from demo import create_app, db, Config
+from quasimodo_website import create_app, db, Config
 
 from selenium import webdriver
 from pyvirtualdisplay import Display
 
-from demo.models.fact import add_all_facts_to_db, read_facts
+from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
 
 
 class TestExplorer(LiveServerTestCase):

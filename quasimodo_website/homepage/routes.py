@@ -4,10 +4,10 @@ import zipfile
 from flask import render_template, url_for, current_app
 from werkzeug.utils import redirect
 
-from demo import db
-from demo.homepage import bp
-from demo.models import Fact
-from demo.models.fact import read_facts_from_file, add_all_facts_to_db
+from quasimodo_website import db
+from quasimodo_website.homepage import bp
+from quasimodo_website.models import Fact
+from quasimodo_website.models.fact import read_facts_from_file, add_all_facts_to_db
 
 
 @bp.route("/")

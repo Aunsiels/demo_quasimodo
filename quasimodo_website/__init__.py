@@ -11,10 +11,10 @@ db = SQLAlchemy()
 migrate = Migrate(db)
 
 
-from demo.config import Config
-from demo.homepage import bp as bp_homepage
-from demo.explorer import bp as bp_explorer
-from demo.models import create_all_db
+from quasimodo_website.config import Config
+from quasimodo_website.homepage import bp as bp_homepage
+from quasimodo_website.explorer import bp as bp_explorer
+from quasimodo_website.models import create_all_db
 
 
 def create_app(testing=False):
