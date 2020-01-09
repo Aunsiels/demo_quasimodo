@@ -1,5 +1,4 @@
 import os
-import sys
 
 from flask import render_template, request, url_for
 from flask import current_app as app
@@ -34,7 +33,7 @@ def home():
         facts = facts.filter_by(object=obj)
     if modality:
         search = "%{}%".format(modality)
-        facts = facts.filter(Fact.modality.like(search))
+        facts = facts.filter(Fact.modality_like(search))
     if polarity is not None:
         print(polarity)
         facts = facts.filter_by(is_negative=polarity)

@@ -108,6 +108,10 @@ class Fact(db.Model):
         examples = [(example[0], int(example[1])) for example in raw_examples_tuples]
         return examples
 
+    @classmethod
+    def modality_like(cls, search):
+        return Fact.__modality_json.like(search)
+
 
 def read_facts(filename):
     with open(filename) as f:
