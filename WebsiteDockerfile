@@ -1,0 +1,34 @@
+from ubuntu:latest
+
+RUN apt update -yqq \
+    && apt upgrade -yqq \
+    && apt install -y unzip \
+        python3 python3-pip \
+    && rm -rf /var/lib/apt/lists/*  
+
+RUN pip3 install --upgrade pip
+
+RUN pip3 install \
+    flask-testing \
+    selenium \
+    pytest \
+    flask \
+    flask-bootstrap \
+    flask-sqlalchemy \
+    flask-migrate \
+    flask-wtf \
+    flask_fontawesome \
+    pyvirtualdisplay \
+    pytest-cov \
+    pytest-profiling \
+    pylint \
+    pycodestyle
+
+COPY . /demo_quasimodo
+
+ENV PYTHONPATH=$PYTHONPATH:demo_quasimodo \
+    FLASK_APP=demo_quasimodo/launch_demo.py \
+    LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8
+
+CMD cd demo_quasimodo && flask run --host 0.0.0.0
