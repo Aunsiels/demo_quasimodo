@@ -7,3 +7,7 @@ demo/test-reports/
 demo/testsapp_test.db
 test-reports/
 *swp
+build/
+dist/
+logs/
+quasimodo_website.egg-info/

@@ -24,16 +24,19 @@ RUN pip3 install \
     pytest-profiling \
     pylint \
     pycodestyle \
-    psycopg2
+    psycopg2 \
+    waitress
 
-ENV PYTHONPATH=$PYTHONPATH:demo_quasimodo \
-    FLASK_APP=demo_quasimodo/launch_demo.py \
-    LC_ALL=C.UTF-8 \
+ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     DATABASE_URL=postgresql+psycopg2://postgres:root@db:5432/postgres
 
 EXPOSE 5000
 
-COPY . /demo_quasimodo
+RUN mkdir /logs && chmod -R 777 /logs
 
-CMD cd demo_quasimodo && flask run --host 0.0.0.0
+COPY ./dist/*.whl /
+
+RUN pip3 install *.whl
+
+CMD echo "Starting Server..." && waitress-serve --call 'demo:create_app'

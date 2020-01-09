@@ -39,7 +39,6 @@ RUN CHROME_SETUP=google-chrome.deb && \
     apt-get install -y -f && \
     rm $CHROME_SETUP
 
-
 RUN pip3 install --upgrade pip
 
 RUN pip3 install \
@@ -56,6 +55,7 @@ RUN pip3 install \
     pytest-cov \
     pytest-profiling \
     pylint \
-    pycodestyle
+    pycodestyle \
+    wheel
 
 RUN mkdir /.cache && mkdir /.cache/dconf && chmod -R 777 /.cache/dconf

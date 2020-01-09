@@ -1,0 +1,3 @@
+include demo/logging.cfg 
+graft demo/templates
+global-exclude *.pyc

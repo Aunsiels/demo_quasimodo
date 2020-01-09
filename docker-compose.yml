@@ -14,6 +14,9 @@ services:
         depends_on:
             - db
         ports:
-            - 5000:5000
+            - 8080:8080
+        volumes:
+            - logs:/logs
 volumes:
     pgdata:
+    logs:

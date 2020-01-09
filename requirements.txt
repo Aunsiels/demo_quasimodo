@@ -12,3 +12,4 @@ pytest-cov
 pytest-profiling
 pylint
 pycodestyle
+wheel
