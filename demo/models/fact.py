@@ -1,4 +1,5 @@
 import json
+import sys
 
 from demo import db
 
@@ -18,12 +19,17 @@ class Fact(db.Model):
     plausibility = db.Column(db.Float)
     typicality = db.Column(db.Float)
     saliency = db.Column(db.Float)
-    __examples_json = db.Column(db.String(LONG_ELEMENTS_SIZE))
     __examples = []
+    __examples_json = db.Column(db.String(LONG_ELEMENTS_SIZE))
 
     @property
     def examples(self):
-        return self.__examples
+        if self.__examples:
+            return self.__examples
+        else:
+            self.__examples = json.loads(self.__examples_json)
+            return self.__examples
+
 
     @examples.setter
     def examples(self, examples):
@@ -32,7 +38,7 @@ class Fact(db.Model):
 
     @property
     def examples_json(self):
-        return self.__examples
+        return self.__examples_json
 
     @examples_json.setter
     def examples_json(self, examples_json):
@@ -73,7 +79,10 @@ def read_facts(filename):
 def read_facts_from_file(f):
     facts = []
     for line in f:
-        facts.append(Fact.from_line(line.decode("utf-8")))
+        if isinstance(line, str):
+            facts.append(Fact.from_line(line))
+        else:
+            facts.append(Fact.from_line(line.decode("utf-8")))
     return facts
 
 

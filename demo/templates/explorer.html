@@ -27,21 +27,24 @@
                             <a href="{{ url_for('explorer.home', page=1, order='td', **additional_args) }}"><i class="fas fa-long-arrow-alt-down"></i></a>
                         {% endif %}
                         {% if order != "ta" %}
-                            <a href="{{ url_for('explorer.home', page=1, order='ta', **additional_args) }}"><i class="fas fa-long-arrow-alt-up"></i></a></th>
+                            <a href="{{ url_for('explorer.home', page=1, order='ta', **additional_args) }}"><i class="fas fa-long-arrow-alt-up"></i></a>
                         {% endif %}
+                    </th>
                     <th>Saliency
                         {% if order != "sd" %}
                             <a href="{{ url_for('explorer.home', page=1, order='sd', **additional_args) }}"><i class="fas fa-long-arrow-alt-down"></i></a>
                         {% endif %}
                         {% if order != "sa" %}
-                            <a href="{{ url_for('explorer.home', page=1, order='sa', **additional_args) }}"><i class="fas fa-long-arrow-alt-up"></i></a></th>
+                            <a href="{{ url_for('explorer.home', page=1, order='sa', **additional_args) }}"><i class="fas fa-long-arrow-alt-up"></i></a>
                         {% endif %}
+                    </th>
+                    <th>Inspect</th>
                 </tr>
             </thead>
             <tbody>
             {% for fact in facts %}
                 <tr>
-                    <td> <a href="{{ url_for('explorer.home', page=1, order='pd', subject=fact.subject) }}">{{ fact.subject }}</a></td>
+                    <td><a href="{{ url_for('explorer.home', page=1, order='pd', subject=fact.subject) }}">{{ fact.subject }}</a></td>
                     <td><a href="{{ url_for('explorer.home', page=1, order='pd', predicate=fact.predicate) }}">{{ fact.predicate }}</a></td>
                     <td><a href="{{ url_for('explorer.home', page=1, order='pd', object=fact.object) }}">{{ fact.object }}</a></td>
                     <td>{{ fact.modality }}</td>
@@ -53,6 +56,7 @@
                     <td>{{ "{0:.2f}".format(fact.plausibility) }}</td>
                     <td>{{ "{0:.2f}".format(fact.typicality) }}</td>
                     <td>{{ "{0:.2f}".format(fact.saliency) }}</td>
+                    <td><a href="{{url_for('explorer.get_fact', id=fact.id) }}"><i class="fas fa-search"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -15,6 +15,7 @@ from demo.models.fact import add_all_facts_to_db, read_facts
 class TestExplorer(LiveServerTestCase):
 
     browser = None
+    display = None
 
     def create_app(self):
         Config.SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) + "app_test.db"

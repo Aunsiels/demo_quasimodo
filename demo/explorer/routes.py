@@ -1,4 +1,5 @@
 import os
+import sys
 
 from flask import render_template, request, url_for
 from flask import current_app as app
@@ -110,5 +111,5 @@ def get_fact():
     if fact_id is not None:
         fact = Fact.query.get(fact_id)
         if fact is not None:
-            return str(fact.subject)
+            return render_template("fact_details.html", fact=fact)
     return redirect(url_for("homepage.home"))

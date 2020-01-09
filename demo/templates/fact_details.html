@@ -1,0 +1,68 @@
+{% extends "homepage.html" %}
+
+{% block inner_content %}
+
+<table class="table table-striped table-bordered">
+    <tbody>
+        <tr>
+            <th>Subject</th>
+            <td><a href="{{ url_for('explorer.home', page=1, order='pd', subject=fact.subject) }}">{{ fact.subject }}</a></td>
+        </tr>
+        <tr>
+            <th>Predicate</th>
+            <td><a href="{{ url_for('explorer.home', page=1, order='pd', predicate=fact.predicate) }}">{{ fact.predicate }}</a></td>
+        </tr>
+        <tr>
+            <th>Object</th>
+            <td><a href="{{ url_for('explorer.home', page=1, order='pd', object=fact.object) }}">{{ fact.object }}</a></td>
+        </tr>
+        <tr>
+            <th>Modality</th>
+            <td>{{ fact.modality }}</td>
+        </tr>
+        <tr>
+            <th>Polarity</th>
+            {% if fact.is_negative %}
+                <td>NEGATIVE</td>
+            {% else %}
+                <td>POSITIVE</td>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>Plausibility</th>
+            <td>{{ "{0:.4f}".format(fact.plausibility) }}</td>
+        </tr>
+        <tr>
+            <th>Typicality</th>
+            <td>{{ "{0:.4f}".format(fact.typicality) }}</td>
+        </tr>
+        <tr>
+            <th>Saliency</th>
+            <td>{{ "{0:.4f}".format(fact.saliency) }}</td>
+        </tr>
+        <tr>
+            <th>Example Sentences</th>
+            <td>
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Sentence</th>
+                            <th>Occurrences</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sentence in fact.examples %}
+                        <tr>
+                            <td>{{ sentence[0] }}</td>
+                            <td>{{ sentence[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+{% endblock %}
