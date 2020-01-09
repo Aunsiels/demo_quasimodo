@@ -102,3 +102,13 @@ def search():
         args["order"] = request.args.get("order", "pd", type=str)
         return redirect(url_for("explorer.home", **args))
     return render_template("search.html", form=form)
+
+
+@bp.route("/fact")
+def get_fact():
+    fact_id = request.args.get('id', None, type=int)
+    if fact_id is not None:
+        fact = Fact.query.get(fact_id)
+        if fact is not None:
+            return str(fact.subject)
+    return redirect(url_for("homepage.home"))

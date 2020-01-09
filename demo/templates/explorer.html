@@ -41,9 +41,9 @@
             <tbody>
             {% for fact in facts %}
                 <tr>
-                    <td>{{ fact.subject }}</td>
-                    <td>{{ fact.predicate }}</td>
-                    <td>{{ fact.object }}</td>
+                    <td> <a href="{{ url_for('explorer.home', page=1, order='pd', subject=fact.subject) }}">{{ fact.subject }}</a></td>
+                    <td><a href="{{ url_for('explorer.home', page=1, order='pd', predicate=fact.predicate) }}">{{ fact.predicate }}</a></td>
+                    <td><a href="{{ url_for('explorer.home', page=1, order='pd', object=fact.object) }}">{{ fact.object }}</a></td>
                     <td>{{ fact.modality }}</td>
                     {% if fact.is_negative %}
                         <td>NEGATIVE</td>
