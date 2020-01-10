@@ -31,7 +31,7 @@ style-check:
 	pycodestyle quasimodo_website > pep8.report || true
 
 build:
-	rm dist/*
+	rm -f dist/*
 	$(PYTHON) setup.py sdist bdist_wheel
 
 clean:
