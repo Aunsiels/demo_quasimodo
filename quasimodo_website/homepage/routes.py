@@ -19,8 +19,10 @@ def home():
 def initialize():
     n_facts = Fact.query.count()
     if n_facts == 0:
+        url = request.args.get("url",
+                               'https://www.mpi-inf.mpg.de/fileadmin/inf/d5/research/quasimodo/quasimodo-v1.2.zip',
+                               type=str)
         current_app.logger.info("Downloading Quasimodo...")
-        url = 'https://www.mpi-inf.mpg.de/fileadmin/inf/d5/research/quasimodo/quasimodo-v1.2.zip'
         file_handle, _ = urllib.request.urlretrieve(url)
         current_app.logger.info("Unzipping Quasimodo...")
         zip_file_object = zipfile.ZipFile(file_handle, 'r')

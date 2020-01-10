@@ -121,11 +121,15 @@ def read_facts(filename):
 
 def read_facts_from_file(f):
     facts = []
+    first = True
     for line in f:
-        if isinstance(line, str):
-            facts.append(Fact.from_line(line))
+        if not isinstance(line, str):
+            line = line.decode("utf-8")
+        if first and line.startswith("subject\t"):
+            first = False
         else:
-            facts.append(Fact.from_line(line.decode("utf-8")))
+            first = False
+            facts.append(Fact.from_line(line))
     return facts
 
 
