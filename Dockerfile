@@ -46,7 +46,7 @@ RUN pip3 install \
     selenium \
     pytest \
     flask \
-    flask-bootstrap \
+    flask-bootstrap4 \
     flask-sqlalchemy \
     flask-migrate \
     flask-wtf \
