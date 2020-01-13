@@ -121,7 +121,7 @@ class TestExplorer(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.display = Display(visible=0, size=(800,600))
+        cls.display = Display(visible=0, size=(1600,1024))
         cls.display.start()
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')

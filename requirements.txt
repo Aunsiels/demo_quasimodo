@@ -2,7 +2,7 @@ flask-testing
 selenium
 pytest
 flask
-flask-bootstrap
+flask-bootstrap4
 flask-sqlalchemy
 flask-migrate
 flask-wtf
