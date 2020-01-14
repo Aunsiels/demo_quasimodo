@@ -20,11 +20,11 @@ test-code-profiling-svg:
 
 test-coverage:
 		rm -rf coverage .coverage
-		$(PYTEST) quasimodo_website --showlocals -v --cov=pyformlang --cov-report=html:coverage
+		$(PYTEST) quasimodo_website --showlocals -v --cov=quasimodo_website --cov-report=html:coverage
 
 test-coverage-xml:
 		rm -rf reports/coverage.xml
-		$(PYTEST) quasimodo_website --showlocals -v --cov=pyformlang --cov-report=xml:reports/coverage.xml
+		$(PYTEST) quasimodo_website --showlocals -v --cov=quasimodo_website --cov-report=xml:reports/coverage.xml
 
 style-check:
 	$(PYLINT) --rcfile=pylint.cfg quasimodo_website > pylint.report || true

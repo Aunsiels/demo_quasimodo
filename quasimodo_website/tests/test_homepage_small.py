@@ -3,7 +3,7 @@ import unittest
 
 from quasimodo_website.tests.test_homepage import TestHomepage
 
-TIME_TO_COLLAPSE = 3
+TIME_TO_COLLAPSE = 5
 
 
 class TestHomepageSmall(TestHomepage):
