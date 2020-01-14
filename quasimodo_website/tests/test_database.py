@@ -8,7 +8,7 @@ from quasimodo_website import db
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
-               "app_test.db"
+               "/app_test.db"
 
 PATH_TO_SAMPLE = os.path.abspath(os.path.dirname(__file__)) +\
                  "/quasimodo_sample.tsv"
