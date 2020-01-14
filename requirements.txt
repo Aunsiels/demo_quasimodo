@@ -12,6 +12,7 @@ pytest
 pytest-cov
 pytest-flask
 pytest-profiling
+Flask-Session
 pyvirtualdisplay
 selenium
 wheel

@@ -19,6 +19,9 @@ class TestHomepageSmall(TestHomepage):
         self.browser.get(home_url)
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
         self.retry_execute_until(
+            lambda: self.browser.find_element_by_link_text("Home"),
+            TIME_TO_COLLAPSE)
+        self.retry_execute_until(
             lambda: self.browser.find_element_by_link_text("Home").click(),
             TIME_TO_COLLAPSE)
         self.retry_execute_until(
@@ -47,6 +50,11 @@ class TestHomepageSmall(TestHomepage):
     def test_click_explorer(self):
         self.browser.get(self.get_server_url() + "/")
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
+        # These tests do not work all the time
+        # I guess it comes from a too long loading time
+        self.retry_execute_until(
+            lambda: self.browser.find_element_by_link_text("Explorer"),
+            TIME_TO_COLLAPSE)
         self.retry_execute_until(
             lambda: self.browser.find_element_by_link_text("Explorer").click(),
             TIME_TO_COLLAPSE)

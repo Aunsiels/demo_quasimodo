@@ -11,3 +11,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FACTS_PER_PAGE = 20
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
+    SESSION_TYPE = os.environ.get("SESSION_TYPE") or "filesystem"
