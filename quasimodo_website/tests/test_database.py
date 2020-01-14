@@ -3,9 +3,8 @@ import unittest
 
 import pytest
 from flask import current_app
-from flask_testing import LiveServerTestCase
 
-from quasimodo_website import create_app, db, Config
+from quasimodo_website import db
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
