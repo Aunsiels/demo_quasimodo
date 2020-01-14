@@ -12,5 +12,5 @@ dist/
 logs/
 quasimodo_website.egg-info/
 *zip
-.coverage
+*coverage
 reports/

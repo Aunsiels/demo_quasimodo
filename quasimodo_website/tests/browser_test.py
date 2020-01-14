@@ -1,26 +1,21 @@
 import os
+import unittest
 
-from flask_testing import LiveServerTestCase
+import pytest
+from flask import url_for
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
-from quasimodo_website import create_app, Config
 
-DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
-               "app_test.db"
+@pytest.mark.usefixtures('live_server')
+class BrowserTest(unittest.TestCase):
 
-
-class BrowserTest(LiveServerTestCase):
+    @staticmethod
+    def get_server_url():
+        return url_for('homepage.home', _external=True).strip("/")
 
     display = None
     browser = None
-
-    def create_app(self):
-        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
-        Config.FACTS_PER_PAGE = 6
-        app = create_app(True)
-        self.client = app.test_client()
-        return app
 
     @classmethod
     def start_display(cls, width, height):

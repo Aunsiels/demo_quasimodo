@@ -41,21 +41,8 @@ RUN CHROME_SETUP=google-chrome.deb && \
 
 RUN pip3 install --upgrade pip
 
-RUN pip3 install \
-    flask-testing \
-    selenium \
-    pytest \
-    flask \
-    flask-bootstrap4 \
-    flask-sqlalchemy \
-    flask-migrate \
-    flask-wtf \
-    flask_fontawesome \
-    pyvirtualdisplay \
-    pytest-cov \
-    pytest-profiling \
-    pylint \
-    pycodestyle \
-    wheel
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
 
 RUN mkdir /.cache && mkdir /.cache/dconf && chmod -R 777 /.cache/dconf

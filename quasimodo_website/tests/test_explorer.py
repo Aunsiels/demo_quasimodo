@@ -1,4 +1,5 @@
 import os
+import time
 import unittest
 from urllib.request import urlopen
 
@@ -81,6 +82,10 @@ class TestExplorer(BrowserTest):
 
     def test_sorted_pd(self):
         self.browser.get(self.get_server_url() + "/explorer")
+        self.check_if_is_sorted_column(PLAUSIBILITY_COLUMN, True)
+
+    def test_sorted_pd_default(self):
+        self.browser.get(self.get_server_url() + "/explorer?order=blabla")
         self.check_if_is_sorted_column(PLAUSIBILITY_COLUMN, True)
 
     def test_sorted_pa(self):
@@ -168,6 +173,22 @@ class TestExplorer(BrowserTest):
         self.browser.find_element_by_name("search").click()
         object_on_page = self.get_column_values(POLARITY_COLUMN)
         self.assertEqual(set(object_on_page), {"NEGATIVE"})
+
+    def test_fact_page_no_id(self):
+        self.browser.get(self.get_server_url() + "/explorer/fact")
+        self.assertEqual(self.browser.current_url,
+                         self.get_server_url() + "/")
+
+    def test_fact_page_check_url_correct(self):
+        self.browser.get(self.get_server_url() + "/explorer/fact?id=1")
+        self.assertEqual(self.browser.current_url,
+                         self.get_server_url() + "/explorer/fact?id=1")
+        self.assertEqual(self.get_column_values(0)[0], "musician")
+
+    def test_fact_page_check_url_incorrect(self):
+        self.browser.get(self.get_server_url() + "/explorer/fact?id=0")
+        self.assertEqual(self.browser.current_url,
+                         self.get_server_url() + "/")
 
 
 if __name__ == '__main__':

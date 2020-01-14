@@ -2,6 +2,7 @@ import urllib.request
 import zipfile
 
 from flask import render_template, url_for, current_app, request
+from werkzeug.exceptions import abort
 from werkzeug.utils import redirect
 
 from quasimodo_website import db

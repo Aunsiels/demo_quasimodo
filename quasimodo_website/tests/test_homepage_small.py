@@ -5,18 +5,26 @@ from selenium.common.exceptions import NoSuchElementException
 
 from quasimodo_website.tests.test_homepage import TestHomepage
 
-TIME_TO_COLLAPSE = 20
+TIME_TO_COLLAPSE = 120
+
+
+class WrongUrlException(Exception):
+    pass
 
 
 class TestHomepageSmall(TestHomepage):
 
     def test_click_home(self):
-        self.browser.get(self.get_server_url() + "/")
+        home_url = self.get_server_url() + "/"
+        self.browser.get(home_url)
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
         self.retry_execute_until(
             lambda: self.browser.find_element_by_link_text("Home").click(),
             TIME_TO_COLLAPSE)
-        self.assertEqual(self.browser.current_url, self.get_server_url() + "/")
+        self.retry_execute_until(
+            lambda: self.check_on_url(home_url),
+            TIME_TO_COLLAPSE)
+        self.assertEqual(self.browser.current_url, home_url)
 
     def retry_execute_until(self, action_to_perform, time_limit):
         found_element = False
@@ -28,7 +36,14 @@ class TestHomepageSmall(TestHomepage):
                 break
             except NoSuchElementException:
                 pass
+            except WrongUrlException:
+                pass
         self.assertTrue(found_element)
+
+    def check_on_url(self, url):
+        if self.browser.current_url != url:
+            print(self.browser.current_url)
+            raise WrongUrlException
 
     def test_click_explorer(self):
         self.browser.get(self.get_server_url() + "/")
@@ -36,7 +51,11 @@ class TestHomepageSmall(TestHomepage):
         self.retry_execute_until(
             lambda: self.browser.find_element_by_link_text("Explorer").click(),
             TIME_TO_COLLAPSE)
-        self.assertEqual(self.browser.current_url, self.get_server_url() + "/explorer/")
+        explorer_url = self.get_server_url() + "/explorer/"
+        self.retry_execute_until(
+            lambda: self.check_on_url(explorer_url),
+            TIME_TO_COLLAPSE)
+        self.assertEqual(self.browser.current_url, explorer_url)
 
     @classmethod
     def setUpClass(cls) -> None:
