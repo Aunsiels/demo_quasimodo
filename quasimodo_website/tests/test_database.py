@@ -1,6 +1,8 @@
 import os
 import unittest
 
+import pytest
+from flask import current_app
 from flask_testing import LiveServerTestCase
 
 from quasimodo_website import create_app, db, Config
@@ -13,14 +15,8 @@ PATH_TO_SAMPLE = os.path.abspath(os.path.dirname(__file__)) +\
                  "/quasimodo_sample.tsv"
 
 
-class TestDatabase(LiveServerTestCase):
-
-    def create_app(self):
-        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
-        app = create_app(True)
-        print(Config.SQLALCHEMY_DATABASE_URI)
-        self.client = app.test_client()
-        return app
+@pytest.mark.usefixtures('live_server')
+class TestDatabase(unittest.TestCase):
 
     def setUp(self) -> None:
         self.facts = read_facts(PATH_TO_SAMPLE)
@@ -81,10 +77,10 @@ class TestDatabase(LiveServerTestCase):
 
     def test_paginate(self):
         add_all_facts_to_db(self.facts, db)
-        self.app.config["FACTS_PER_PAGE"] = 5
+        current_app.config["FACTS_PER_PAGE"] = 5
         self.assertEqual(
             len(Fact.query.paginate(1,
-                                    self.app.config["FACTS_PER_PAGE"],
+                                    current_app.config["FACTS_PER_PAGE"],
                                     False).items),
             5)
 
