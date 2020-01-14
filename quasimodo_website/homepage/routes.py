@@ -7,7 +7,8 @@ from werkzeug.utils import redirect
 from quasimodo_website import db
 from quasimodo_website.homepage import bp
 from quasimodo_website.models import Fact
-from quasimodo_website.models.fact import read_facts_from_file, add_all_facts_to_db
+from quasimodo_website.models.fact import read_facts_from_file,\
+    add_all_facts_to_db
 
 
 @bp.route("/")
@@ -20,7 +21,8 @@ def initialize():
     n_facts = Fact.query.count()
     if n_facts == 0:
         url = request.args.get("url",
-                               'https://www.mpi-inf.mpg.de/fileadmin/inf/d5/research/quasimodo/quasimodo-v1.2.zip',
+                               'https://www.mpi-inf.mpg.de/fileadmin/inf/'
+                               'd5/research/quasimodo/quasimodo-v1.2.zip',
                                type=str)
         current_app.logger.info("Downloading Quasimodo...")
         file_handle, _ = urllib.request.urlretrieve(url)

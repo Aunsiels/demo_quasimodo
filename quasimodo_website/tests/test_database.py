@@ -6,18 +6,24 @@ from flask_testing import LiveServerTestCase
 from quasimodo_website import create_app, db, Config
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
+DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
+               "app_test.db"
+
+PATH_TO_SAMPLE = os.path.abspath(os.path.dirname(__file__)) +\
+                 "/quasimodo_sample.tsv"
+
 
 class TestDatabase(LiveServerTestCase):
 
     def create_app(self):
-        Config.SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) + "app_test.db"
+        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
         app = create_app(True)
         print(Config.SQLALCHEMY_DATABASE_URI)
         self.client = app.test_client()
         return app
 
     def setUp(self) -> None:
-        self.facts = read_facts(os.path.abspath(os.path.dirname(__file__)) + "/quasimodo_sample.tsv")
+        self.facts = read_facts(PATH_TO_SAMPLE)
         self.first_fact = self.facts[0]
 
     def tearDown(self):
@@ -58,7 +64,8 @@ class TestDatabase(LiveServerTestCase):
         self.assertTrue(isinstance(self.first_fact.examples_json, str))
 
     def test_examples_have_text(self):
-        self.assertEqual(self.first_fact.examples[0][0], "musicians make music")
+        self.assertEqual(self.first_fact.examples[0][0],
+                         "musicians make music")
 
     def test_examples_have_occurrences(self):
         self.assertEqual(self.first_fact.examples[0][1], 12)
@@ -75,7 +82,11 @@ class TestDatabase(LiveServerTestCase):
     def test_paginate(self):
         add_all_facts_to_db(self.facts, db)
         self.app.config["FACTS_PER_PAGE"] = 5
-        self.assertEqual(len(Fact.query.paginate(1, self.app.config["FACTS_PER_PAGE"], False).items), 5)
+        self.assertEqual(
+            len(Fact.query.paginate(1,
+                                    self.app.config["FACTS_PER_PAGE"],
+                                    False).items),
+            5)
 
 
 if __name__ == '__main__':

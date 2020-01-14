@@ -9,7 +9,6 @@ ELEMENTS_SIZE = 256
 
 
 class Fact(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     subject = db.Column(db.String(ELEMENTS_SIZE), index=True)
     predicate = db.Column(db.String(ELEMENTS_SIZE), index=True)
@@ -104,8 +103,11 @@ class Fact(db.Model):
     def get_multiple_sentence_column(cls, line, column_number):
         if not line[column_number].strip():
             return []
-        raw_examples_tuples = [example.split(" x#x") for example in line[column_number].split(" // ")]
-        examples = [(example[0], int(example[1])) for example in raw_examples_tuples]
+        raw_examples_tuples = [example.split(" x#x")
+                               for example in
+                               line[column_number].split(" // ")]
+        examples = [(example[0], int(example[1]))
+                    for example in raw_examples_tuples]
         return examples
 
     @classmethod

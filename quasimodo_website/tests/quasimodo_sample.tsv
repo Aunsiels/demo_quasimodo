@@ -7,4 +7,4 @@ cloud	has_color	yellow	 	0	0.88465465465	clouds are yellow x#x6 // clouds is yel
 swimming	has_property	fun	 	0	0.874654654	swimming is fun x#x10 // swimming so is fun x#x1	0.02357768544933198	0.005594061824326828
 heat	bend	light	 	0	0.86454546546	heat bend light x#x10	0.0025589112459098507	0.11207026846860363
 fish	live in	water	 	0	0.8546546546546505	fish live in water x#x4 // fishes live in water x#x3 // fishes adapt to live in water x#x1	0.0036500721722362473	0.020160006350215746
-neon	produce	light	 	0	0.8454654654654454	neon produce light x#x6 // neon and other noble gases produce light x#x2	0.014397593607600167	0.039363374210104975
+neon	produce	light	 	1	0.8454654654654454	neon produce light x#x6 // neon and other noble gases produce light x#x2	0.014397593607600167	0.039363374210104975

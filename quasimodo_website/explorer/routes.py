@@ -38,7 +38,9 @@ def home():
         print(polarity)
         facts = facts.filter_by(is_negative=polarity)
 
-    facts = facts.order_by(order).paginate(page, app.config["FACTS_PER_PAGE"], False)
+    facts = facts.order_by(order).paginate(page,
+                                           app.config["FACTS_PER_PAGE"],
+                                           False)
     new_args = request.args.copy()
     new_args["page"] = facts.next_num
     next_url = url_for('explorer.home', **new_args) if facts.has_next else None
@@ -75,7 +77,8 @@ def get_order(order_str):
 
 @bp.route("/fill")
 def fill():
-    facts = read_facts(os.path.abspath(os.path.dirname(__file__)) + "/../tests/quasimodo_sample.tsv")
+    facts = read_facts(os.path.abspath(os.path.dirname(__file__)) +
+                       "/../tests/quasimodo_sample.tsv")
     add_all_facts_to_db(facts, db)
     return "Done"
 

@@ -40,11 +40,18 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.display = Display(visible=0, size=(1600,1024))
+        cls.start_display(1600, 1024)
+        cls.start_browser()
+
+    @classmethod
+    def start_display(cls, width, height):
+        cls.display = Display(visible=0, size=(width, height))
         cls.display.start()
+
+    @classmethod
+    def start_browser(cls):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
-
         chrome_options.add_experimental_option('prefs', {
             'download.default_directory': os.getcwd(),
             'download.prompt_for_download': False,
@@ -56,8 +63,8 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-       cls.browser.quit()
-       cls.display.stop()
+         cls.browser.quit()
+         cls.display.stop()
 
 
 if __name__ == '__main__':

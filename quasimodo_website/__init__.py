@@ -10,7 +10,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 migrate = Migrate(db)
 
-
 from quasimodo_website.config import Config
 from quasimodo_website.homepage import bp as bp_homepage
 from quasimodo_website.explorer import bp as bp_explorer

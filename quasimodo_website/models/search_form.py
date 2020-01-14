@@ -8,7 +8,9 @@ class SearchForm(FlaskForm):
     predicate = StringField("Predicate")
     object = StringField("Object")
     modality = StringField("Modality")
-    polarity = SelectField("Polarity", choices=[("Positive and Negative", "Positive and Negative"),
-                                                ("Positive", "Positive"),
-                                                ("Negative", "Negative")])
+    polarity = SelectField("Polarity",
+                           choices=[("Positive and Negative",
+                                     "Positive and Negative"),
+                                    ("Positive", "Positive"),
+                                    ("Negative", "Negative")])
     search = SubmitField("Search")
