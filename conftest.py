@@ -5,7 +5,7 @@ import pytest
 from quasimodo_website import Config, create_app
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
-               "app_test.db"
+               "/app_test.db"
 
 
 @pytest.fixture
