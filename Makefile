@@ -38,4 +38,4 @@ clean:
 	rm -rf coverage .coverage
 	$(MAKE) -C doc clean
 
-.PHONY: clean build
+.PHONY: clean build style-check

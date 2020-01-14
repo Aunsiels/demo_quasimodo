@@ -6,6 +6,8 @@ flask-wtf
 flask_fontawesome
 pycodestyle
 pylint
+pylint-flask
+pylint_flask_sqlalchemy
 pytest
 pytest-cov
 pytest-flask
