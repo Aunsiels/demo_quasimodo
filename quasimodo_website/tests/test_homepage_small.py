@@ -42,7 +42,6 @@ class TestHomepageSmall(TestHomepage):
 
     def check_on_url(self, url):
         if self.browser.current_url != url:
-            print(self.browser.current_url)
             raise WrongUrlException
 
     def test_click_explorer(self):
