@@ -1,9 +1,11 @@
 import time
 import unittest
 
+from selenium.common.exceptions import NoSuchElementException
+
 from quasimodo_website.tests.test_homepage import TestHomepage
 
-TIME_TO_COLLAPSE = 5
+TIME_TO_COLLAPSE = 20
 
 
 class TestHomepageSmall(TestHomepage):
@@ -11,15 +13,29 @@ class TestHomepageSmall(TestHomepage):
     def test_click_home(self):
         self.browser.get(self.get_server_url() + "/")
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
-        time.sleep(TIME_TO_COLLAPSE)
-        self.browser.find_element_by_link_text("Home").click()
+        self.retry_execute_until(
+            lambda: self.browser.find_element_by_link_text("Home").click(),
+            TIME_TO_COLLAPSE)
         self.assertEqual(self.browser.current_url, self.get_server_url() + "/")
+
+    def retry_execute_until(self, action_to_perform, time_limit):
+        found_element = False
+        time_begin = time.time()
+        while time.time() - time_begin < time_limit:
+            try:
+                action_to_perform()
+                found_element = True
+                break
+            except NoSuchElementException:
+                pass
+        self.assertTrue(found_element)
 
     def test_click_explorer(self):
         self.browser.get(self.get_server_url() + "/")
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
-        time.sleep(1)
-        self.browser.find_element_by_link_text("Explorer").click()
+        self.retry_execute_until(
+            lambda: self.browser.find_element_by_link_text("Explorer").click(),
+            TIME_TO_COLLAPSE)
         self.assertEqual(self.browser.current_url, self.get_server_url() + "/explorer/")
 
     @classmethod

@@ -2,12 +2,7 @@ import os
 import unittest
 from urllib.request import urlopen
 
-
 from quasimodo_website import db
-
-from selenium import webdriver
-from pyvirtualdisplay import Display
-
 from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
 from quasimodo_website.tests.browser_test import BrowserTest
 

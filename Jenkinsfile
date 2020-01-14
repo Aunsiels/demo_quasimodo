@@ -37,7 +37,7 @@ pipeline {
       }
       steps {
         echo 'Code Coverage'
-        sh 'make test-coverage-xml'
+        sh 'make test-coverage-xml || echo 0'
         echo 'Style Check'
         sh 'make style-check'
         recordIssues(enabledForFailure: true, tool: pyLint(pattern: 'pylint.report'), sourceCodeEncoding: 'UTF-8')
