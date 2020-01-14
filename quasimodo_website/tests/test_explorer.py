@@ -2,19 +2,16 @@ import os
 import unittest
 from urllib.request import urlopen
 
-from flask_testing import LiveServerTestCase
 
-from quasimodo_website import create_app, db, Config
+from quasimodo_website import db
 
 from selenium import webdriver
 from pyvirtualdisplay import Display
 
 from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
+from quasimodo_website.tests.browser_test import BrowserTest
 
 SAMPLE_PATH = os.path.abspath(os.path.dirname(__file__)) + "/quasimodo_sample.tsv"
-
-DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
-               "app_test.db"
 
 POLARITY_COLUMN = 4
 
@@ -33,18 +30,7 @@ PREDICATE_COLUMN = 1
 SUBJECT_COLUMN = 0
 
 
-class TestExplorer(LiveServerTestCase):
-
-    browser = None
-    display = None
-
-    def create_app(self):
-        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
-        Config.FACTS_PER_PAGE = 6
-        app = create_app(True)
-        print(Config.SQLALCHEMY_DATABASE_URI)
-        self.client = app.test_client()
-        return app
+class TestExplorer(BrowserTest):
 
     def setUp(self) -> None:
         self.facts = read_facts(SAMPLE_PATH)
@@ -53,7 +39,7 @@ class TestExplorer(LiveServerTestCase):
     def tearDown(self):
         db.session.remove()
         db.drop_all()
-        self.browser.delete_all_cookies()
+        super().tearDown()
 
     def test_server_is_up_and_running(self):
         response = urlopen(self.get_server_url())
@@ -85,7 +71,7 @@ class TestExplorer(LiveServerTestCase):
         self.assertEqual(
             len(self.browser.find_elements_by_link_text("Previous facts")),
             0)
-        self.browser.find_elements_by_link_text("Next facts")[0].click()
+        self.browser.find_element_by_link_text("Next facts").click()
         rows = self.browser.find_elements_by_xpath("//table//tr")
         self.assertEqual(len(rows), 5)
 
@@ -94,7 +80,7 @@ class TestExplorer(LiveServerTestCase):
         self.assertEqual(
             len(self.browser.find_elements_by_link_text("Next facts")),
             0)
-        self.browser.find_elements_by_link_text("Previous facts")[0].click()
+        self.browser.find_element_by_link_text("Previous facts").click()
         rows = self.browser.find_elements_by_xpath("//table//tr")
         self.assertEqual(len(rows), 7)
 
@@ -187,24 +173,6 @@ class TestExplorer(LiveServerTestCase):
         self.browser.find_element_by_name("search").click()
         object_on_page = self.get_column_values(POLARITY_COLUMN)
         self.assertEqual(set(object_on_page), {"NEGATIVE"})
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.display = Display(visible=0, size=(1600, 1024))
-        cls.display.start()
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--no-sandbox')
-
-        chrome_options.add_experimental_option('prefs', {
-            'download.default_directory': os.getcwd(),
-            'download.prompt_for_download': False,
-        })
-        cls.browser = webdriver.Chrome(chrome_options=chrome_options)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        cls.browser.quit()
-        cls.display.stop()
 
 
 if __name__ == '__main__':
