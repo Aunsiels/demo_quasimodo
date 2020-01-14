@@ -63,8 +63,8 @@ class TestHomepage(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-         cls.browser.quit()
-         cls.display.stop()
+        cls.browser.quit()
+        cls.display.stop()
 
 
 if __name__ == '__main__':
