@@ -14,3 +14,8 @@ quasimodo_website.egg-info/
 *zip
 *coverage
 reports/
+*db
+flask_session/
+*.report
+*.report
+quasimodo_website/tests/flask_session/
