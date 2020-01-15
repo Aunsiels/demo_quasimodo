@@ -24,6 +24,7 @@ class BrowserTest(unittest.TestCase):
 
     @classmethod
     def start_browser(cls):
+        print("Start Browser")
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_experimental_option('prefs', {
@@ -45,5 +46,6 @@ class BrowserTest(unittest.TestCase):
         cls.browser.close()
         cls.browser.quit()
         cls.display.stop()
+        print("Close browser")
         cls.browser = None
         cls.display = None

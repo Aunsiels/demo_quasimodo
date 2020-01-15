@@ -10,7 +10,7 @@ test-code:
 	$(PYTEST) --showlocals -v quasimodo_website
 
 test-code-xml:
-	$(PYTEST) --showlocals -v quasimodo_website --junit-xml test-reports/results.xml
+	$(PYTEST) --capture=no --showlocals -v quasimodo_website --junit-xml test-reports/results.xml
 
 test-code-profiling:
 	$(PYTEST) --showlocals -v quasimodo_website --profile
