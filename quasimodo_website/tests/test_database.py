@@ -1,10 +1,10 @@
 import os
 import unittest
 
-import pytest
 from flask import current_app
+from flask_testing import LiveServerTestCase
 
-from quasimodo_website import db
+from quasimodo_website import db, Config, create_app
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
@@ -14,8 +14,13 @@ PATH_TO_SAMPLE = os.path.abspath(os.path.dirname(__file__)) +\
                  "/quasimodo_sample.tsv"
 
 
-@pytest.mark.usefixtures('live_server')
-class TestDatabase(unittest.TestCase):
+class TestDatabase(LiveServerTestCase):
+
+    def create_app(self):
+        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
+        Config.FACTS_PER_PAGE = 6
+        app = create_app(True)
+        return app
 
     def setUp(self) -> None:
         self.facts = read_facts(PATH_TO_SAMPLE)

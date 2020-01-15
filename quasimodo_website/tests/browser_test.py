@@ -1,20 +1,22 @@
 import os
 import unittest
 
-import pytest
 from flask import url_for
+from flask_testing import LiveServerTestCase
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
-from quasimodo_website import db
+from quasimodo_website import db, Config, create_app
+from quasimodo_website.tests.test_database import DB_TEST_PATH
 
 
-@pytest.mark.usefixtures('live_server')
-class BrowserTest(unittest.TestCase):
+class BrowserTest(LiveServerTestCase):
 
-    @staticmethod
-    def get_server_url():
-        return url_for('homepage.home', _external=True).strip("/")
+    def create_app(self):
+        Config.SQLALCHEMY_DATABASE_URI = DB_TEST_PATH
+        Config.FACTS_PER_PAGE = 6
+        app = create_app(True)
+        return app
 
     display = None
     browser = None

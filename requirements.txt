@@ -2,6 +2,7 @@ flask
 flask-bootstrap4
 flask-migrate
 flask-sqlalchemy
+flask-testing
 flask-wtf
 flask_fontawesome
 pycodestyle
@@ -10,7 +11,6 @@ pylint-flask
 pylint_flask_sqlalchemy
 pytest
 pytest-cov
-pytest-flask
 pytest-profiling
 Flask-Session
 pyvirtualdisplay
