@@ -7,7 +7,7 @@ from werkzeug.utils import redirect
 from quasimodo_website import db
 from quasimodo_website.homepage import bp
 from quasimodo_website.models import Fact
-from quasimodo_website.models.fact import read_facts_from_file,\
+from quasimodo_website.models.fact import read_facts_from_file, \
     add_all_facts_to_db
 
 

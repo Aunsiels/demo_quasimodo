@@ -42,5 +42,8 @@ class BrowserTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
+        cls.browser.close()
         cls.browser.quit()
         cls.display.stop()
+        cls.browser = None
+        cls.display = None
