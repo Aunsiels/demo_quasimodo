@@ -9,21 +9,11 @@ RUN apt update -yqq \
 
 RUN pip3 install --upgrade pip
 
+COPY requirements.txt requirements.txt
+
+RUN pip3 install -r requirements.txt
+
 RUN pip3 install \
-    flask-testing \
-    selenium \
-    pytest \
-    flask \
-    flask-bootstrap \
-    flask-sqlalchemy \
-    flask-migrate \
-    flask-wtf \
-    flask_fontawesome \
-    pyvirtualdisplay \
-    pytest-cov \
-    pytest-profiling \
-    pylint \
-    pycodestyle \
     psycopg2 \
     waitress
 
