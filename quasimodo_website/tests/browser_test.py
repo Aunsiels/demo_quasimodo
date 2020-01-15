@@ -6,6 +6,8 @@ from flask import url_for
 from pyvirtualdisplay import Display
 from selenium import webdriver
 
+from quasimodo_website import db
+
 
 @pytest.mark.usefixtures('live_server')
 class BrowserTest(unittest.TestCase):
@@ -40,6 +42,8 @@ class BrowserTest(unittest.TestCase):
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()
+        db.session.remove()
+        db.drop_all()
 
     @classmethod
     def tearDownClass(cls) -> None:
