@@ -1,7 +1,5 @@
 import os
-import unittest
 
-from flask import url_for
 from flask_testing import LiveServerTestCase
 from pyvirtualdisplay import Display
 from selenium import webdriver
