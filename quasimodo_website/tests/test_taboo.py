@@ -22,11 +22,11 @@ class TestTaboo(BrowserTest):
         self.assertEqual(0, len(words))
 
     def test_give_a_word(self):
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=popopotest")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=zzzzzz")
         self.assertNotIn("error", self.get_json())
         self.browser.get(self.get_server_url() + "/taboo/get_given_words")
         words = self.get_json()
-        self.assertEqual(["popopotest"], words)
+        self.assertEqual(["zzzzzz"], words)
 
     def test_give_two_words(self):
         self.browser.get(self.get_server_url() + "/taboo/give_word?word=popopotest")

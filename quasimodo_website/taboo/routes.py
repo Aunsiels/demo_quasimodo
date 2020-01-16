@@ -116,7 +116,7 @@ def initialize():
     n_facts = TabooCard.query.count()
     if n_facts == 0:
         cards = []
-        with open(os.path.abspath(os.path.dirname(__file__)) + "/../../data/taboo.tsv") as f:
+        with open(os.path.abspath(os.path.dirname(__file__)) + "/../static/data/taboo.tsv") as f:
             for line in f:
                 line = line.strip().split("\t")
                 taboo_card = TabooCard(word_to_guess=line[0])

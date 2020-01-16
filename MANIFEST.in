@@ -1,5 +1,4 @@
 include quasimodo_website/logging.cfg 
-include data/taboo.tsv
 graft quasimodo_website/templates
 graft quasimodo_website/static
 global-exclude *.pyc
