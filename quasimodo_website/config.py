@@ -12,3 +12,4 @@ class Config(object):
     FACTS_PER_PAGE = 20
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SESSION_TYPE = os.environ.get("SESSION_TYPE") or "filesystem"
+    PREFERRED_URL_SCHEME = 'https'
