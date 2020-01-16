@@ -7,33 +7,18 @@ TIME_TO_COLLAPSE = 120
 
 class TestHomepageSmall(TestHomepage):
 
-    def test_click_home(self):
-        home_url = self.get_server_url() + "/"
-        self.browser.get(home_url)
-        self.browser.find_element_by_class_name("navbar-toggler-icon").click()
-        self.retry_execute_until(
-            lambda: self.browser.find_element_by_link_text("Home"),
-            TIME_TO_COLLAPSE)
-        self.retry_execute_until(
-            lambda: self.browser.find_element_by_link_text("Home").click(),
-            TIME_TO_COLLAPSE)
-        self.retry_execute_until(
-            lambda: self.check_on_url(home_url),
-            TIME_TO_COLLAPSE)
-        self.assertEqual(self.browser.current_url, home_url)
-
-    def test_click_explorer(self):
+    def check_click_text_goes_to(self, text_to_click, final_url):
         self.browser.get(self.get_server_url() + "/")
         self.browser.find_element_by_class_name("navbar-toggler-icon").click()
         # These tests do not work all the time
         # I guess it comes from a too long loading time
         self.retry_execute_until(
-            lambda: self.browser.find_element_by_link_text("Explorer"),
+            lambda: self.browser.find_element_by_link_text(text_to_click),
             TIME_TO_COLLAPSE)
         self.retry_execute_until(
-            lambda: self.browser.find_element_by_link_text("Explorer").click(),
+            lambda: self.browser.find_element_by_link_text(text_to_click).click(),
             TIME_TO_COLLAPSE)
-        explorer_url = self.get_server_url() + "/explorer/"
+        explorer_url = self.get_server_url() + final_url
         self.retry_execute_until(
             lambda: self.check_on_url(explorer_url),
             TIME_TO_COLLAPSE)
@@ -41,7 +26,7 @@ class TestHomepageSmall(TestHomepage):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.start_display(200, 100)
+        cls.start_display(200, 400)
         cls.start_browser()
 
 
