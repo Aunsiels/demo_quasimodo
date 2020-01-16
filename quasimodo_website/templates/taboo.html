@@ -33,7 +33,7 @@
             <div>
                 <div class="msj-rta macro" style="margin:auto">
                     <div class="text text-r" style="background:whitesmoke !important">
-                        <input class="mytext" placeholder="Give a clue" data-url="{{ url_for('taboo.give_word', _external=True) }}"/>
+                        <input class="mytext" placeholder="Give a clue" data-url="{{ url_for('taboo.give_word') }}"/>
                     </div>
                 </div>
             </div>
@@ -44,8 +44,8 @@
     <div class="row">
         <div class="col" align="center">
             <br>
-            <button type="button" class="btn btn-dark" onclick="load_new_card('{{ url_for('taboo.start_new_game', _external=True) }}')" id="new-game">New Game</button>
-            <button type="button" class="btn btn-dark" onclick="try_to_guess('{{ url_for('taboo.guess_word', _external=True) }}')" id="guess-word">Guess Word</button>
+            <button type="button" class="btn btn-dark" onclick="load_new_card('{{ url_for('taboo.start_new_game') }}')" id="new-game">New Game</button>
+            <button type="button" class="btn btn-dark" onclick="try_to_guess('{{ url_for('taboo.guess_word') }}')" id="guess-word">Guess Word</button>
         </div>
     </div>
 
