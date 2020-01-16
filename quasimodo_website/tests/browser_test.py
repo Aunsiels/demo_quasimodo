@@ -1,11 +1,17 @@
 import os
+import time
 
 from flask_testing import LiveServerTestCase
 from pyvirtualdisplay import Display
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 
 from quasimodo_website import db, Config, create_app
 from quasimodo_website.tests.test_database import DB_TEST_PATH
+
+
+class WrongUrlException(Exception):
+    pass
 
 
 class BrowserTest(LiveServerTestCase):
@@ -53,3 +59,21 @@ class BrowserTest(LiveServerTestCase):
         print("Close browser")
         cls.browser = None
         cls.display = None
+
+    def retry_execute_until(self, action_to_perform, time_limit):
+        found_element = False
+        time_begin = time.time()
+        while time.time() - time_begin < time_limit:
+            try:
+                action_to_perform()
+                found_element = True
+                break
+            except NoSuchElementException:
+                pass
+            except WrongUrlException:
+                pass
+        self.assertTrue(found_element)
+
+    def check_on_url(self, url):
+        if self.browser.current_url != url:
+            raise WrongUrlException

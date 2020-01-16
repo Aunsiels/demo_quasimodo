@@ -3,6 +3,9 @@ import json
 from quasimodo_website.tests.browser_test import BrowserTest
 
 
+TIME_TO_LOAD = 60
+
+
 class TestTaboo(BrowserTest):
 
     def setUp(self) -> None:
@@ -78,3 +81,34 @@ class TestTaboo(BrowserTest):
         result = self.get_json()
         self.assertIn("guessed", result)
         self.assertIn("is_correct", result)
+
+    def test_getting_wrongly_guessed_words(self):
+        self.browser.get(self.get_server_url() + "/taboo/get_wrongly_guessed")
+        result = self.get_json()
+        self.assertEqual(0, len(result))
+        self.browser.get(self.get_server_url() + "/taboo/guess_word")
+        self.browser.get(self.get_server_url() + "/taboo/get_wrongly_guessed")
+        result = self.get_json()
+        self.assertLess(0, len(result))
+
+    def test_reinitialized_wrongly_guessed_words(self):
+        self.browser.get(self.get_server_url() + "/taboo/guess_word")
+        self.browser.get(self.get_server_url() + "/taboo/start_new_game")
+        self.browser.get(self.get_server_url() + "/taboo/get_wrongly_guessed")
+        result = self.get_json()
+        self.assertEqual(0, len(result))
+
+    def test_before_new_game(self):
+        self.browser.get(self.get_server_url() + "/taboo")
+        button = self.browser.find_elements_by_id("new-game")
+        self.assertEqual(len(button), 1)
+        self.assertFalse(self.browser.find_element_by_id("tabooCard").is_displayed())
+
+    def test_after_new_game(self):
+        self.browser.get(self.get_server_url() + "/taboo")
+        self.browser.find_element_by_id("new-game").click()
+        self.assertTrue(self.browser.find_element_by_id("tabooCard").is_displayed())
+        card_header = self.browser.find_elements_by_id("card_title")
+        self.assertEqual(len(card_header), 1)
+        forbidden_words = self.browser.find_elements_by_xpath("//ul[@id='forbidden_words']/li")
+        self.assertEqual(len(forbidden_words), 5)

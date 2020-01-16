@@ -1,7 +1,7 @@
 import os
 import random
 
-from flask import session, request, jsonify
+from flask import session, request, jsonify, render_template
 from sqlalchemy import func
 
 from quasimodo_website.models import Fact
@@ -12,7 +12,7 @@ from quasimodo_website import db
 
 @bp.route("/")
 def home():
-    return ""
+    return render_template("taboo.html")
 
 
 @bp.route("/start_new_game")
@@ -25,6 +25,7 @@ def start_new_game():
     random_card = TabooCard.query[rand_number]
     session["word_to_guess"] = random_card.word_to_guess
     session["forbidden_words"] = random_card.get_forbidden_words()
+    session["wrongly_guessed"] = []
     return jsonify({"word_to_guess": random_card.word_to_guess,
                     "forbidden_words": random_card.get_forbidden_words()})
 

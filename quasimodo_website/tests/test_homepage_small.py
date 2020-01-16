@@ -1,15 +1,8 @@
-import time
 import unittest
-
-from selenium.common.exceptions import NoSuchElementException
 
 from quasimodo_website.tests.test_homepage import TestHomepage
 
 TIME_TO_COLLAPSE = 120
-
-
-class WrongUrlException(Exception):
-    pass
 
 
 class TestHomepageSmall(TestHomepage):
@@ -28,24 +21,6 @@ class TestHomepageSmall(TestHomepage):
             lambda: self.check_on_url(home_url),
             TIME_TO_COLLAPSE)
         self.assertEqual(self.browser.current_url, home_url)
-
-    def retry_execute_until(self, action_to_perform, time_limit):
-        found_element = False
-        time_begin = time.time()
-        while time.time() - time_begin < time_limit:
-            try:
-                action_to_perform()
-                found_element = True
-                break
-            except NoSuchElementException:
-                pass
-            except WrongUrlException:
-                pass
-        self.assertTrue(found_element)
-
-    def check_on_url(self, url):
-        if self.browser.current_url != url:
-            raise WrongUrlException
 
     def test_click_explorer(self):
         self.browser.get(self.get_server_url() + "/")
