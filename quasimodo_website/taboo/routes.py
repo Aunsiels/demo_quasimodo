@@ -1,7 +1,7 @@
 import os
 import random
 
-from flask import session, request, jsonify, render_template
+from flask import session, request, jsonify, render_template, current_app
 from sqlalchemy import func
 
 from quasimodo_website.models import Fact
@@ -30,20 +30,21 @@ def start_new_game():
                     "forbidden_words": random_card.get_forbidden_words()})
 
 
-def try_to_guess(words_given, wrongly_guessed):
+def try_to_guess(words_given, wrongly_guessed,
+                 score_criterion=Fact.plausibility):
     query = None
     if not words_given:
         return "No idea"
     for word in words_given:
         sub_query = Fact.query.filter(Fact.object.like("%" + word + "%"))\
-                              .with_entities(Fact.subject, Fact.plausibility)
+                              .with_entities(Fact.subject, score_criterion)
         if query is None:
             query = sub_query
         else:
             query = query.union(sub_query)
     query = query.filter(Fact.subject.notin_(wrongly_guessed))\
                  .group_by(Fact.subject)
-    query = query.with_entities(Fact.subject, func.sum(Fact.plausibility))
+    query = query.with_entities(Fact.subject, func.max(score_criterion))
     results = query.all()
     if not results:
         return "No idea"
@@ -66,6 +67,9 @@ def give_word():
         given_word = preprocess_given_word(given_word)
         words_given = session.get("words_given", [])
         word_to_guess = session.get("word_to_guess", "")
+        current_app.logger.info("Taboo: word to guess: " +
+                                word_to_guess +
+                                " word given: " + given_word)
         if are_too_similar(word_to_guess, given_word):
             return jsonify({"error": "The given word is too similar "
                                      "to the word to guess"})
