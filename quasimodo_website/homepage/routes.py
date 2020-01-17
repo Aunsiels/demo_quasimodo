@@ -4,8 +4,8 @@ import zipfile
 from flask import render_template, url_for, current_app, request
 from werkzeug.utils import redirect
 
-from quasimodo_website import db
-from quasimodo_website.homepage import bp
+from quasimodo_website import DB
+from quasimodo_website.homepage.blueprint import bp
 from quasimodo_website.models import Fact
 from quasimodo_website.models.fact import read_facts_from_file, \
     add_all_facts_to_db
@@ -33,6 +33,6 @@ def initialize():
         current_app.logger.info("Reading facts...")
         facts = read_facts_from_file(file)
         current_app.logger.info("Filling database...")
-        add_all_facts_to_db(facts, db)
+        add_all_facts_to_db(facts, DB)
         return "Initialization done"
     return redirect(url_for("homepage.home"))

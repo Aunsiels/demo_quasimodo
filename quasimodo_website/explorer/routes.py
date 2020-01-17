@@ -5,8 +5,8 @@ from flask import current_app as app
 from sqlalchemy import desc, asc
 from werkzeug.utils import redirect
 
-from quasimodo_website import db
-from quasimodo_website.explorer import bp
+from quasimodo_website import DB
+from quasimodo_website.explorer.blueprint import bp
 from quasimodo_website.models.fact import Fact, read_facts, add_all_facts_to_db
 from quasimodo_website.models.search_form import SearchForm
 
@@ -79,7 +79,7 @@ def get_order(order_str):
 def fill():
     facts = read_facts(os.path.abspath(os.path.dirname(__file__)) +
                        "/../tests/quasimodo_sample.tsv")
-    add_all_facts_to_db(facts, db)
+    add_all_facts_to_db(facts, DB)
     return "Done"
 
 

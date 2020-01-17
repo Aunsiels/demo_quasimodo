@@ -14,7 +14,8 @@ class TestTaboo(BrowserTest):
 
     def test_can_access(self):
         self.browser.get(self.get_server_url() + "/taboo")
-        self.assertEqual(self.browser.current_url, self.get_server_url() + "/taboo/")
+        self.assertEqual(self.browser.current_url,
+                         self.get_server_url() + "/taboo/")
 
     def test_no_word_given(self):
         self.browser.get(self.get_server_url() + "/taboo/get_given_words")
@@ -22,22 +23,22 @@ class TestTaboo(BrowserTest):
         self.assertEqual(0, len(words))
 
     def test_give_a_word(self):
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=zzzzzz")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=zzzz")
         self.assertNotIn("error", self.get_json())
         self.browser.get(self.get_server_url() + "/taboo/get_given_words")
         words = self.get_json()
-        self.assertEqual(["zzzzzz"], words)
+        self.assertEqual(["zzzz"], words)
 
     def test_give_two_words(self):
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=popopotest")
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=pipapopu")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=ztzt")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=tztz")
         self.browser.get(self.get_server_url() + "/taboo/get_given_words")
         words = self.get_json()
-        self.assertEqual(["popopotest", "pipapopu"], words)
+        self.assertEqual(["ztzt", "tztz"], words)
 
     def test_reinitialize(self):
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=pipapopu")
-        self.browser.get(self.get_server_url() + "/taboo/give_word?word=popopotest")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=tztz")
+        self.browser.get(self.get_server_url() + "/taboo/give_word?word=ztzt")
         self.browser.get(self.get_server_url() + "/taboo/start_new_game")
         self.browser.get(self.get_server_url() + "/taboo/get_given_words")
         words = self.get_json()
@@ -102,13 +103,16 @@ class TestTaboo(BrowserTest):
         self.browser.get(self.get_server_url() + "/taboo")
         button = self.browser.find_elements_by_id("new-game")
         self.assertEqual(len(button), 1)
-        self.assertFalse(self.browser.find_element_by_id("tabooCard").is_displayed())
+        self.assertFalse(self.browser.find_element_by_id("tabooCard")
+                                     .is_displayed())
 
     def test_after_new_game(self):
         self.browser.get(self.get_server_url() + "/taboo")
         self.browser.find_element_by_id("new-game").click()
-        self.assertTrue(self.browser.find_element_by_id("tabooCard").is_displayed())
+        self.assertTrue(self.browser.find_element_by_id("tabooCard")
+                                    .is_displayed())
         card_header = self.browser.find_elements_by_id("card_title")
         self.assertEqual(len(card_header), 1)
-        forbidden_words = self.browser.find_elements_by_xpath("//ul[@id='forbidden_words']/li")
+        forbidden_words = self.browser.find_elements_by_xpath(
+            "//ul[@id='forbidden_words']/li")
         self.assertEqual(len(forbidden_words), 5)

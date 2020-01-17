@@ -16,7 +16,8 @@ class TestHomepageSmall(TestHomepage):
             lambda: self.browser.find_element_by_link_text(text_to_click),
             TIME_TO_COLLAPSE)
         self.retry_execute_until(
-            lambda: self.browser.find_element_by_link_text(text_to_click).click(),
+            lambda: self.browser.find_element_by_link_text(text_to_click)
+                .click(),
             TIME_TO_COLLAPSE)
         explorer_url = self.get_server_url() + final_url
         self.retry_execute_until(

@@ -1,25 +1,25 @@
 import json
 
-from quasimodo_website import db
+from quasimodo_website import DB
 
 LONG_ELEMENTS_SIZE = 8192
 
 ELEMENTS_SIZE = 256
 
 
-class Fact(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    subject = db.Column(db.String(ELEMENTS_SIZE), index=True)
-    predicate = db.Column(db.String(ELEMENTS_SIZE), index=True)
-    object = db.Column(db.String(ELEMENTS_SIZE), index=True)
+class Fact(DB.Model):
+    id = DB.Column(DB.Integer, primary_key=True)
+    subject = DB.Column(DB.String(ELEMENTS_SIZE), index=True)
+    predicate = DB.Column(DB.String(ELEMENTS_SIZE), index=True)
+    object = DB.Column(DB.String(ELEMENTS_SIZE), index=True)
     __modality = []
-    __modality_json = db.Column(db.String(LONG_ELEMENTS_SIZE), index=True)
-    is_negative = db.Column(db.Boolean)
-    plausibility = db.Column(db.Float)
-    typicality = db.Column(db.Float)
-    saliency = db.Column(db.Float)
+    __modality_json = DB.Column(DB.String(LONG_ELEMENTS_SIZE), index=True)
+    is_negative = DB.Column(DB.Boolean)
+    plausibility = DB.Column(DB.Float)
+    typicality = DB.Column(DB.Float)
+    saliency = DB.Column(DB.Float)
     __examples = []
-    __examples_json = db.Column(db.String(LONG_ELEMENTS_SIZE))
+    __examples_json = DB.Column(DB.String(LONG_ELEMENTS_SIZE))
 
     @property
     def examples(self):

@@ -22,7 +22,8 @@ class TestHomepage(BrowserTest):
     def check_click_text_goes_to(self, test_to_click, final_url):
         self.browser.get(self.get_server_url() + "/")
         self.browser.find_element_by_link_text(test_to_click).click()
-        self.assertEqual(self.browser.current_url, self.get_server_url() + final_url)
+        self.assertEqual(self.browser.current_url,
+                         self.get_server_url() + final_url)
 
     def test_click_explorer(self):
         test_to_click = "Explorer"

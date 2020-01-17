@@ -6,7 +6,7 @@ from pyvirtualdisplay import Display
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
-from quasimodo_website import db, Config, create_app
+from quasimodo_website import DB, Config, create_app
 from quasimodo_website.tests.test_database import DB_TEST_PATH
 
 
@@ -32,7 +32,6 @@ class BrowserTest(LiveServerTestCase):
 
     @classmethod
     def start_browser(cls):
-        print("Start Browser")
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_experimental_option('prefs', {
@@ -48,15 +47,14 @@ class BrowserTest(LiveServerTestCase):
 
     def tearDown(self) -> None:
         self.browser.delete_all_cookies()
-        db.session.remove()
-        db.drop_all()
+        DB.session.remove()
+        DB.drop_all()
 
     @classmethod
     def tearDownClass(cls) -> None:
         cls.browser.close()
         cls.browser.quit()
         cls.display.stop()
-        print("Close browser")
         cls.browser = None
         cls.display = None
 

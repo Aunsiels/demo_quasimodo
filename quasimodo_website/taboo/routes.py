@@ -6,8 +6,8 @@ from sqlalchemy import func
 
 from quasimodo_website.models import Fact
 from quasimodo_website.models.taboo_card import TabooCard
-from quasimodo_website.taboo import bp
-from quasimodo_website import db
+from quasimodo_website.taboo.blueprint import bp
+from quasimodo_website import DB
 
 
 @bp.route("/")
@@ -35,13 +35,14 @@ def try_to_guess(words_given, wrongly_guessed):
     if not words_given:
         return "No idea"
     for word in words_given:
-        sub_query = Fact.query.filter(Fact.object.like("%" + word + "%")
-                                      ).with_entities(Fact.subject, Fact.plausibility)
+        sub_query = Fact.query.filter(Fact.object.like("%" + word + "%"))\
+                              .with_entities(Fact.subject, Fact.plausibility)
         if query is None:
             query = sub_query
         else:
             query = query.union(sub_query)
-    query = query.filter(Fact.subject.notin_(wrongly_guessed)).group_by(Fact.subject)
+    query = query.filter(Fact.subject.notin_(wrongly_guessed))\
+                 .group_by(Fact.subject)
     query = query.with_entities(Fact.subject, func.sum(Fact.plausibility))
     results = query.all()
     if not results:
@@ -82,7 +83,8 @@ def give_word():
 
 @bp.route("/guess_word")
 def guess_word():
-    guessed = try_to_guess(session.get("words_given", []), session.get("wrongly_guessed", []))
+    guessed = try_to_guess(session.get("words_given", []),
+                           session.get("wrongly_guessed", []))
     is_correct = guessed == session.get("word_to_guess", "")
     if not is_correct:
         session["wrongly_guessed"] = session.get("wrongly_guessed", [])
@@ -116,12 +118,13 @@ def initialize():
     n_facts = TabooCard.query.count()
     if n_facts == 0:
         cards = []
-        with open(os.path.abspath(os.path.dirname(__file__)) + "/../static/data/taboo.tsv") as f:
+        with open(os.path.abspath(os.path.dirname(__file__)) +
+                  "/../static/data/taboo.tsv") as f:
             for line in f:
                 line = line.strip().split("\t")
                 taboo_card = TabooCard(word_to_guess=line[0])
                 taboo_card.set_forbidden_words(line[1:])
                 cards.append(taboo_card)
-        db.session.add_all(cards)
-        db.session.commit()
+        DB.session.add_all(cards)
+        DB.session.commit()
     return jsonify({"status": "Done"})

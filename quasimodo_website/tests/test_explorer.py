@@ -2,11 +2,12 @@ import os
 import unittest
 from urllib.request import urlopen
 
-from quasimodo_website import db
+from quasimodo_website import DB
 from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
 from quasimodo_website.tests.browser_test import BrowserTest
 
-SAMPLE_PATH = os.path.abspath(os.path.dirname(__file__)) + "/quasimodo_sample.tsv"
+SAMPLE_PATH = os.path.abspath(os.path.dirname(__file__)) +\
+              "/quasimodo_sample.tsv"
 
 POLARITY_COLUMN = 4
 
@@ -29,11 +30,11 @@ class TestExplorer(BrowserTest):
 
     def setUp(self) -> None:
         self.facts = read_facts(SAMPLE_PATH)
-        add_all_facts_to_db(self.facts, db)
+        add_all_facts_to_db(self.facts, DB)
 
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        DB.session.remove()
+        DB.drop_all()
         super().tearDown()
 
     def test_server_is_up_and_running(self):

@@ -4,7 +4,7 @@ import unittest
 from flask import current_app
 from flask_testing import LiveServerTestCase
 
-from quasimodo_website import db, Config, create_app
+from quasimodo_website import DB, Config, create_app
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
@@ -27,8 +27,8 @@ class TestDatabase(LiveServerTestCase):
         self.first_fact = self.facts[0]
 
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
+        DB.session.remove()
+        DB.drop_all()
 
     def test_read_quasimodo(self):
         self.assertEqual(len(self.facts), 10)
@@ -71,16 +71,16 @@ class TestDatabase(LiveServerTestCase):
         self.assertEqual(self.first_fact.examples[0][1], 12)
 
     def test_add_database(self):
-        db.session.add(self.first_fact)
-        db.session.commit()
+        DB.session.add(self.first_fact)
+        DB.session.commit()
         self.assertEqual(len(Fact.query.all()), 1)
 
     def test_add_all_database(self):
-        add_all_facts_to_db(self.facts, db)
+        add_all_facts_to_db(self.facts, DB)
         self.assertEqual(len(Fact.query.all()), 10)
 
     def test_paginate(self):
-        add_all_facts_to_db(self.facts, db)
+        add_all_facts_to_db(self.facts, DB)
         current_app.config["FACTS_PER_PAGE"] = 5
         self.assertEqual(
             len(Fact.query.paginate(1,
