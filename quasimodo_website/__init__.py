@@ -3,6 +3,7 @@ import os
 from logging.config import fileConfig
 
 from flask import Flask, request
+from flask.logging import create_logger
 from flask_bootstrap import Bootstrap
 from flask_fontawesome import FontAwesome
 from flask_session import Session
@@ -29,14 +30,16 @@ def create_app(testing=False):
     app.register_blueprint(bp_homepage)
     app.register_blueprint(bp_explorer, url_prefix='/explorer')
     app.register_blueprint(bp_taboo, url_prefix='/taboo')
+    logger = create_logger(app)
     if testing:
-        app.logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
     DB.init_app(app)
     with app.app_context():
         create_all_db()
 
     @app.before_request
+    # pylint: disable=unused-variable
     def log_the_request():
-        app.logger.info(request)
+        logger.info(request)
 
     return app
