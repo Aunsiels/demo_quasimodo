@@ -1,3 +1,3 @@
 from flask import Blueprint
 
-bp = Blueprint('explorer', __name__)
+BP = Blueprint('explorer', __name__)

@@ -25,9 +25,8 @@ class Fact(DB.Model):
     def examples(self):
         if self.__examples:
             return self.__examples
-        else:
-            self.__examples = json.loads(self.__examples_json)
-            return self.__examples
+        self.__examples = json.loads(self.__examples_json)
+        return self.__examples
 
     @examples.setter
     def examples(self, examples):
@@ -47,9 +46,8 @@ class Fact(DB.Model):
     def modality(self):
         if self.__modality:
             return self.__modality
-        else:
-            self.__modality = json.loads(self.__modality_json)
-            return self.__modality
+        self.__modality = json.loads(self.__modality_json)
+        return self.__modality
 
     @modality.setter
     def modality(self, modality):
@@ -115,15 +113,15 @@ class Fact(DB.Model):
 
 
 def read_facts(filename):
-    with open(filename) as f:
-        facts = read_facts_from_file(f)
+    with open(filename) as fact_file:
+        facts = read_facts_from_file(fact_file)
     return facts
 
 
-def read_facts_from_file(f):
+def read_facts_from_file(fact_file):
     facts = []
     first = True
-    for line in f:
+    for line in fact_file:
         if not isinstance(line, str):
             line = line.decode("utf-8")
         if first and line.startswith("subject\t"):
@@ -134,6 +132,6 @@ def read_facts_from_file(f):
     return facts
 
 
-def add_all_facts_to_db(facts, db):
-    db.session.add_all(facts)
-    db.session.commit()
+def add_all_facts_to_db(facts, database):
+    database.session.add_all(facts)
+    database.session.commit()

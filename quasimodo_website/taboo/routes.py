@@ -6,16 +6,16 @@ from sqlalchemy import func
 
 from quasimodo_website.models import Fact
 from quasimodo_website.models.taboo_card import TabooCard
-from quasimodo_website.taboo.blueprint import bp
+from quasimodo_website.taboo.blueprint import BP
 from quasimodo_website import DB
 
 
-@bp.route("/")
+@BP.route("/")
 def home():
     return render_template("taboo.html")
 
 
-@bp.route("/start_new_game")
+@BP.route("/start_new_game")
 def start_new_game():
     session['words_given'] = []
     max_row = TabooCard.query.count()
@@ -59,7 +59,7 @@ def are_too_similar(first_word, second_word):
     return first_word in second_word or second_word in first_word
 
 
-@bp.route("/give_word")
+@BP.route("/give_word")
 def give_word():
     given_word = request.args.get('word', None, type=str)
     if given_word is not None:
@@ -81,7 +81,7 @@ def give_word():
     return jsonify({})
 
 
-@bp.route("/guess_word")
+@BP.route("/guess_word")
 def guess_word():
     guessed = try_to_guess(session.get("words_given", []),
                            session.get("wrongly_guessed", []))
@@ -93,34 +93,34 @@ def guess_word():
                     "is_correct": is_correct})
 
 
-@bp.route("/get_wrongly_guessed")
+@BP.route("/get_wrongly_guessed")
 def get_wrongly_guessed():
     return jsonify(session.get("wrongly_guessed", []))
 
 
-@bp.route("/get_given_words")
+@BP.route("/get_given_words")
 def get_given_words():
     return jsonify(session.get("words_given", []))
 
 
-@bp.route("/get_word_to_guess")
+@BP.route("/get_word_to_guess")
 def get_word_to_guess():
     return jsonify({"word_to_guess": session.get("word_to_guess", "")})
 
 
-@bp.route("/get_forbidden_words")
+@BP.route("/get_forbidden_words")
 def get_forbidden_words():
     return jsonify({"forbidden_words": session.get("forbidden_words", [])})
 
 
-@bp.route("/initialize")
+@BP.route("/initialize")
 def initialize():
     n_facts = TabooCard.query.count()
     if n_facts == 0:
         cards = []
         with open(os.path.abspath(os.path.dirname(__file__)) +
-                  "/../static/data/taboo.tsv") as f:
-            for line in f:
+                  "/../static/data/taboo.tsv") as taboo_card_file:
+            for line in taboo_card_file:
                 line = line.strip().split("\t")
                 taboo_card = TabooCard(word_to_guess=line[0])
                 taboo_card.set_forbidden_words(line[1:])

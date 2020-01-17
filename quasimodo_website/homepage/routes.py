@@ -5,18 +5,18 @@ from flask import render_template, url_for, current_app, request
 from werkzeug.utils import redirect
 
 from quasimodo_website import DB
-from quasimodo_website.homepage.blueprint import bp
+from quasimodo_website.homepage.blueprint import BP
 from quasimodo_website.models import Fact
 from quasimodo_website.models.fact import read_facts_from_file, \
     add_all_facts_to_db
 
 
-@bp.route("/")
+@BP.route("/")
 def home():
     return render_template("homepage.html")
 
 
-@bp.route("/initialize")
+@BP.route("/initialize")
 def initialize():
     n_facts = Fact.query.count()
     if n_facts == 0:

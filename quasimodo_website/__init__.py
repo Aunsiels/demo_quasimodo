@@ -10,9 +10,9 @@ from flask_session import Session
 
 from quasimodo_website.database import DB
 from quasimodo_website.config import Config
-from quasimodo_website.homepage.blueprint import bp as bp_homepage
-from quasimodo_website.explorer.blueprint import bp as bp_explorer
-from quasimodo_website.taboo.blueprint import bp as bp_taboo
+from quasimodo_website.homepage.blueprint import BP as bp_homepage
+from quasimodo_website.explorer.blueprint import BP as bp_explorer
+from quasimodo_website.taboo.blueprint import BP as bp_taboo
 from quasimodo_website.models import create_all_db
 
 

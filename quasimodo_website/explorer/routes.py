@@ -6,12 +6,12 @@ from sqlalchemy import desc, asc
 from werkzeug.utils import redirect
 
 from quasimodo_website import DB
-from quasimodo_website.explorer.blueprint import bp
+from quasimodo_website.explorer.blueprint import BP
 from quasimodo_website.models.fact import Fact, read_facts, add_all_facts_to_db
 from quasimodo_website.models.search_form import SearchForm
 
 
-@bp.route("/")
+@BP.route("/")
 def home():
     page = request.args.get('page', 1, type=int)
     order_str = request.args.get("order", "pd", type=str)
@@ -32,10 +32,9 @@ def home():
     if obj:
         facts = facts.filter_by(object=obj)
     if modality:
-        search = "%{}%".format(modality)
-        facts = facts.filter(Fact.modality_like(search))
+        search_regex = "%{}%".format(modality)
+        facts = facts.filter(Fact.modality_like(search_regex))
     if polarity is not None:
-        print(polarity)
         facts = facts.filter_by(is_negative=polarity)
 
     facts = facts.order_by(order).paginate(page,
@@ -75,7 +74,7 @@ def get_order(order_str):
     return order
 
 
-@bp.route("/fill")
+@BP.route("/fill")
 def fill():
     facts = read_facts(os.path.abspath(os.path.dirname(__file__)) +
                        "/../tests/quasimodo_sample.tsv")
@@ -83,7 +82,7 @@ def fill():
     return "Done"
 
 
-@bp.route("/search", methods=["GET", "POST"])
+@BP.route("/search", methods=["GET", "POST"])
 def search():
     form = SearchForm()
     if form.validate_on_submit():
@@ -107,7 +106,7 @@ def search():
     return render_template("search.html", form=form)
 
 
-@bp.route("/fact")
+@BP.route("/fact")
 def get_fact():
     fact_id = request.args.get('id', None, type=int)
     if fact_id is not None:
