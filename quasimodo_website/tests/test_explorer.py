@@ -1,9 +1,13 @@
 import os
+import time
 import unittest
 from urllib.request import urlopen
 
+from selenium.webdriver import ActionChains
+
 from quasimodo_website import DB
 from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
+from quasimodo_website.models.fact_feedback import FactFeedback
 from quasimodo_website.tests.browser_test import BrowserTest
 
 SAMPLE_PATH = os.path.abspath(os.path.dirname(__file__)) +\
@@ -189,6 +193,29 @@ class TestExplorer(BrowserTest):
         self.browser.get(self.get_server_url() + "/explorer/fact?id=0")
         self.assertEqual(self.browser.current_url,
                          self.get_server_url() + "/")
+
+    def test_give_positive_feedback(self):
+        class_polarity = "positive-feedback"
+        self.check_give_feedback(class_polarity)
+
+    def test_give_negative_feedback(self):
+        class_polarity = "negative-feedback"
+        self.check_give_feedback(class_polarity)
+
+    def check_give_feedback(self, type_of_feedback):
+        self.browser.get(self.get_server_url() + "/explorer")
+        span = self.browser.find_elements_by_xpath("//table//tr//td//span[@class='" + type_of_feedback + "']")[0]
+        self.retry_execute_until(
+            lambda: self.check_is_displayed(span),
+            60)
+        span.click()
+        self.retry_execute_until(
+            lambda: self.browser.switch_to.alert,
+            60)
+        alert_box = self.browser.switch_to.alert
+        self.assertIn("thank", alert_box.text)
+        alert_box.accept()
+        self.assertEqual(FactFeedback.query.count(), 1)
 
 
 if __name__ == '__main__':

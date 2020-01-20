@@ -56,7 +56,10 @@
                     <td>{{ "{0:.2f}".format(fact.plausibility) }}</td>
                     <td>{{ "{0:.2f}".format(fact.typicality) }}</td>
                     <td>{{ "{0:.2f}".format(fact.saliency) }}</td>
-                    <td><a href="{{url_for('explorer.get_fact', id=fact.id) }}"><i class="fas fa-search"></i></a></td>
+                    <td><a href="{{url_for('explorer.get_fact', id=fact.id) }}"><i class="fas fa-search"></i></a>
+                        <span class="positive-feedback" onClick="sendFeedback('{{url_for('explorer.give_feedback', id=fact.id, feedback='POSITIVE') }}')"><i class="fas fa-check" style="color:#2dd638;"></i></span>
+                        <span class="negative-feedback" onClick="sendFeedback('{{url_for('explorer.give_feedback', id=fact.id, feedback='NEGATIVE') }}')"><i class="fas fa-times" style="color:#f52727;"></i></span>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -77,5 +80,14 @@
             No result was found.
         </div>
     {% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+
+    {{super()}}
+
+    <script src="{{ url_for('static', filename='js/explorer.js') }}"></script>
+
 
 {% endblock %}

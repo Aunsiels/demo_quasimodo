@@ -8,6 +8,7 @@ from flask_bootstrap import Bootstrap
 from flask_fontawesome import FontAwesome
 from flask_session import Session
 
+from quasimodo_website.utils import get_ip
 from quasimodo_website.database import DB
 from quasimodo_website.config import Config
 from quasimodo_website.homepage.blueprint import BP as bp_homepage
@@ -40,6 +41,9 @@ def create_app(testing=False):
     @app.before_request
     # pylint: disable=unused-variable
     def log_the_request():
-        logger.info(request)
+        logger.info("\t".join([get_ip(),
+                               request.url,
+                               str(request.data)
+                               ]))
 
     return app

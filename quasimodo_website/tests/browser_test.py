@@ -4,13 +4,17 @@ import time
 from flask_testing import LiveServerTestCase
 from pyvirtualdisplay import Display
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, NoAlertPresentException
 
 from quasimodo_website import DB, Config, create_app
 from quasimodo_website.tests.test_database import DB_TEST_PATH
 
 
 class WrongUrlException(Exception):
+    pass
+
+
+class NotDisplayedException(Exception):
     pass
 
 
@@ -70,8 +74,18 @@ class BrowserTest(LiveServerTestCase):
                 pass
             except WrongUrlException:
                 pass
+            except NotDisplayedException:
+                pass
+            except NoAlertPresentException:
+                pass
         self.assertTrue(found_element)
 
     def check_on_url(self, url):
         if self.browser.current_url != url:
             raise WrongUrlException
+
+    @staticmethod
+    def check_is_displayed(element):
+        if not element.is_displayed():
+            raise NotDisplayedException
+

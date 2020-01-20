@@ -58,7 +58,12 @@ $(".mytext").on("keyup", function(e){
         if (text !== ""){
             insertChat("me", text);
             url += "?word=" + encodeURI(text)
-            getJSON(url, function(status, data) {})
+            getJSON(url, function(status, data) {
+                var error = data["error"];
+                if (error){
+                    insertChat("you", error);
+                }
+            })
             $(this).val('');
         }
     }

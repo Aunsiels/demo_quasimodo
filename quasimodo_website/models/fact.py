@@ -21,6 +21,8 @@ class Fact(DB.Model):
     __examples = []
     __examples_json = DB.Column(DB.String(LONG_ELEMENTS_SIZE))
 
+    feedback = DB.relationship("FactFeedback")
+
     @property
     def examples(self):
         if self.__examples:

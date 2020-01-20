@@ -1,13 +1,14 @@
 import os
 
-from flask import render_template, request, url_for
+from flask import render_template, request, url_for, jsonify
 from flask import current_app as app
 from sqlalchemy import desc, asc
 from werkzeug.utils import redirect
 
-from quasimodo_website import DB
+from quasimodo_website import DB, get_ip
 from quasimodo_website.explorer.blueprint import BP
 from quasimodo_website.models.fact import Fact, read_facts, add_all_facts_to_db
+from quasimodo_website.models.fact_feedback import FactFeedback
 from quasimodo_website.models.search_form import SearchForm
 
 
@@ -114,3 +115,17 @@ def get_fact():
         if fact is not None:
             return render_template("fact_details.html", fact=fact)
     return redirect(url_for("homepage.home"))
+
+
+@BP.route("/feedback")
+def give_feedback():
+    fact_id = request.args.get("id", None, type=int)
+    feedback = request.args.get("feedback", None, type=str)
+    if fact_id is None or feedback is None:
+        return jsonify({"error": "Wrong id or feedback."})
+    fact_feedback = FactFeedback(fact_id=fact_id,
+                                 source=get_ip(),
+                                 feedback=feedback)
+    DB.session.add(fact_feedback)
+    DB.session.commit()
+    return jsonify({"message": "We thank you for your feedback :)"})

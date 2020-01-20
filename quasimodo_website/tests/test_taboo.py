@@ -1,4 +1,7 @@
 import json
+import time
+
+from selenium.webdriver.common.keys import Keys
 
 from quasimodo_website.tests.browser_test import BrowserTest
 
@@ -111,8 +114,38 @@ class TestTaboo(BrowserTest):
         self.browser.find_element_by_id("new-game").click()
         self.assertTrue(self.browser.find_element_by_id("tabooCard")
                                     .is_displayed())
-        card_header = self.browser.find_elements_by_id("card_title")
-        self.assertEqual(len(card_header), 1)
+        card_header = self.get_card_header()
+        self.assertIsNotNone(card_header)
         forbidden_words = self.browser.find_elements_by_xpath(
             "//ul[@id='forbidden_words']/li")
         self.assertEqual(len(forbidden_words), 5)
+
+    def get_card_header(self):
+        card_header = self.browser.find_element_by_id("card_title")
+        return card_header
+
+    def test_write_something_in_chat(self):
+        self.browser.get(self.get_server_url() + "/taboo")
+        text_written = 'Test write'
+        self.write_message_in_chat(text_written)
+        chat = self.get_chat()
+        self.assertIn(text_written, chat[-1])
+
+    def write_message_in_chat(self, text_written):
+        input_text = self.browser.find_element_by_xpath("//input[@class='mytext']")
+        input_text.send_keys(text_written)
+        input_text.send_keys(Keys.ENTER)
+
+    def get_chat(self):
+        messages_li = self.browser.find_elements_by_xpath("//ul[@id='chat-list']//li")
+        chat = [message.text for message in messages_li]
+        return chat
+
+    def test_give_in_chat_word_to_guess(self):
+        self.browser.get(self.get_server_url() + "/taboo")
+        self.browser.find_element_by_id("new-game").click()
+        word_to_guess = self.get_card_header().text
+        self.write_message_in_chat(word_to_guess)
+        chat = self.get_chat()
+        self.assertIn("The given word is too similar to the word to guess",
+                      chat[-1])

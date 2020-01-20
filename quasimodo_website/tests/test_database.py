@@ -6,6 +6,7 @@ from flask_testing import LiveServerTestCase
 
 from quasimodo_website import DB, Config, create_app
 from quasimodo_website.models.fact import read_facts, Fact, add_all_facts_to_db
+from quasimodo_website.models.fact_feedback import FactFeedback
 
 DB_TEST_PATH = 'sqlite:///' + os.path.abspath(os.path.dirname(__file__)) +\
                "/app_test.db"
@@ -87,6 +88,15 @@ class TestDatabase(LiveServerTestCase):
                                     current_app.config["FACTS_PER_PAGE"],
                                     False).items),
             5)
+
+    def test_feedback(self):
+        add_all_facts_to_db(self.facts, DB)
+        feedback = FactFeedback(fact_id=1,
+                                source="127.0.0.1",
+                                feedback="POSITIVE")
+        DB.session.add(feedback)
+        DB.session.commit()
+        self.assertEqual(FactFeedback.query.count(), 1)
 
 
 if __name__ == '__main__':
