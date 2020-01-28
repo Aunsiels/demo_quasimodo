@@ -37,7 +37,10 @@ class Task(DB.Model):
 
     def get_meta(self):
         job = self.get_rq_job()
-        return job.meta
+        if job is not None:
+            return job.meta
+        else:
+            return {}
 
     def is_complete(self):
         if not self.complete:

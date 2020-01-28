@@ -10,7 +10,7 @@ def home():
     tasks = Task.query.paginate(page, current_app.config["FACTS_PER_PAGE"], False)
     next_url = url_for('explorer.home', page=tasks.next_num) if tasks.has_next else None
     prev_url = url_for('explorer.home', page=tasks.prev_num) if tasks.has_prev else None
-    return render_template("tasks_list.html", facts=tasks.items,
+    return render_template("tasks_list.html", tasks=tasks.items,
                            next_url=next_url,
                            prev_url=prev_url)
 
