@@ -1,5 +1,4 @@
 import json
-import time
 
 from selenium.webdriver.common.keys import Keys
 

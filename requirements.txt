@@ -14,5 +14,7 @@ pytest-cov
 pytest-profiling
 Flask-Session
 pyvirtualdisplay
+rq
+redis
 selenium
 wheel

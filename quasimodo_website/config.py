@@ -14,3 +14,4 @@ class Config():
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
     SESSION_TYPE = os.environ.get("SESSION_TYPE") or "filesystem"
     PREFERRED_URL_SCHEME = 'https'
+    REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
