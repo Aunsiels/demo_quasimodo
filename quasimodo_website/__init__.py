@@ -42,7 +42,7 @@ def create_app(testing=False):
     with app.app_context():
         create_all_db()
     app.redis = Redis.from_url(app.config['REDIS_URL'])
-    app.task_queue = rq.Queue('quasimodo-tasks', connection=app.redis)
+    app.task_queue = rq.Queue('quasimodo-tasks', connection=app.redis, default_timeout=50000)
 
     @app.before_request
     # pylint: disable=unused-variable
