@@ -50,7 +50,7 @@ class Task(DB.Model):
     @staticmethod
     def add_task_for_subject(subject):
         if not current_app.config["TESTING"]:
-            job = current_app.queue.enqueue('run_for_subject.run_for_subject', args=(subject,), timeout=10000)
+            job = current_app.task_queue.enqueue('run_for_subject.run_for_subject', args=(subject,), timeout=10000)
         else:
             job = JobTest()
         task = Task(id=job.get_id(), subject=subject, complete=False)
