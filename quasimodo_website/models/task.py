@@ -31,7 +31,7 @@ class JobTest(object):
     def update(self, next_meta):
         self.next_meta = next_meta
 
-    def reload(self):
+    def refresh(self):
         if self.next_meta is not None:
             self.meta = self.next_meta
 
@@ -59,7 +59,7 @@ class Task(DB.Model):
     def get_meta(self):
         job = self.get_rq_job()
         if job is not None:
-            job.reload()
+            job.refresh()
             return job.meta
         else:
             return {}
