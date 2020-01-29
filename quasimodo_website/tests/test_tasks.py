@@ -53,3 +53,7 @@ class TestTaboo(BrowserTest):
         Task.query.get(id).get_rq_job().remove()
         self.assertEqual("True",
                          self.client.get("/tasks/is_complete?id=" + id).data.decode("utf-8"))
+
+    def test_get_all_tasks(self):
+        self.client.get("/tasks/run_pipeline?subject=elephant")
+        self.browser.get(self.get_server_url() + "/")

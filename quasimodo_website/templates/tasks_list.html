@@ -15,7 +15,7 @@
             <tbody>
             {% for task in tasks %}
                 <tr>
-                    <td>task.subject</td>
+                    <td>{{ task.subject }}</td>
                     <td>{% if task.is_complete() %}Yes{% else %}No{% endif %}</td>
                     <td><a href="{{ url_for('tasks.get_meta', id=task.id) }}">View</a></td>
                     <td><a href="">Stop</a></td>

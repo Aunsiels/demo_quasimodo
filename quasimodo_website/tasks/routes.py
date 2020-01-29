@@ -7,7 +7,7 @@ from quasimodo_website.tasks.blueprint import BP
 @BP.route("/")
 def home():
     page = request.args.get('page', 1, type=int)
-    tasks = Task.query.paginate(page, current_app.config["FACTS_PER_PAGE"], False)
+    tasks = Task.query.order_by(Task.created_on.desc()).paginate(page, current_app.config["FACTS_PER_PAGE"], False)
     next_url = url_for('explorer.home', page=tasks.next_num) if tasks.has_next else None
     prev_url = url_for('explorer.home', page=tasks.prev_num) if tasks.has_prev else None
     return render_template("tasks_list.html", tasks=tasks.items,

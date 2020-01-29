@@ -1,6 +1,7 @@
 import redis
 import rq
 from flask import current_app
+from datetime import datetime
 
 from quasimodo_website import DB
 
@@ -43,6 +44,7 @@ class Task(DB.Model):
     id = DB.Column(DB.String(36), primary_key=True)
     subject = DB.Column(DB.String(256), nullable=False)
     complete = DB.Column(DB.Boolean, default=False)
+    created_on = DB.Column(DB.DateTime, default=datetime.utcnow)
 
     def get_rq_job(self):
         if not current_app.config["TESTING"]:
