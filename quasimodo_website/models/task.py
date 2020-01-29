@@ -5,6 +5,10 @@ from flask import current_app
 from quasimodo_website import DB
 
 
+TEST_JOBS = dict()
+COUNTER = 1
+
+
 # From https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs
 class JobTest(object):
     meta = [
@@ -15,9 +19,24 @@ class JobTest(object):
     ]
     is_finished = True
     is_failed = False
+    next_meta = None
+
+    def __init__(self, id):
+        self.id = id
 
     def get_id(self):
-        return 1
+        return self.id
+
+    def update(self, next_meta):
+        self.next_meta = next_meta
+
+    def reload(self):
+        if self.next_meta is not None:
+            self.meta = self.next_meta
+
+    def remove(self):
+        global TEST_JOBS
+        del TEST_JOBS[self.id]
 
 
 class Task(DB.Model):
@@ -33,11 +52,12 @@ class Task(DB.Model):
                 return None
             return rq_job
         else:
-            return JobTest()
+            return TEST_JOBS.get(self.id, None)
 
     def get_meta(self):
         job = self.get_rq_job()
         if job is not None:
+            job.reload()
             return job.meta
         else:
             return {}
@@ -45,7 +65,7 @@ class Task(DB.Model):
     def is_complete(self):
         if not self.complete:
             job = self.get_rq_job()
-            if job.is_finished or job.is_failed:
+            if job is None or job.is_finished or job.is_failed:
                 self.complete = True
                 DB.session.commit()
         return self.complete
@@ -55,7 +75,10 @@ class Task(DB.Model):
         if not current_app.config["TESTING"]:
             job = current_app.task_queue.enqueue('run_for_subject.run_for_subject', args=(subject,), timeout=500000)
         else:
-            job = JobTest()
+            global COUNTER
+            job = JobTest(str(COUNTER))
+            TEST_JOBS[str(COUNTER)] = job
+            COUNTER += 1
         task = Task(id=job.get_id(), subject=subject, complete=False)
         DB.session.add(task)
         DB.session.commit()
