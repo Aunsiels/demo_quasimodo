@@ -1,0 +1,52 @@
+
+<td rowspan="{{ row_span }}">{{ fact["subject"]["value"] }}</td>
+<td rowspan="{{ row_span }}">{{ fact["predicate"]["value"] }}</td>
+<td rowspan="{{ row_span }}">{{ fact["object"]["value"] }}</td>
+<td rowspan="{{ row_span }}">{{ fact["modality"]["value"] }}</td>
+{% if fact["negative"] %}
+    <td>NEGATIVE</td>
+{% else %}
+    <td>POSITIVE</td>
+{% endif %}
+<td rowspan="{{ row_span }}">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in fact["score"]["scores"] %}
+                <tr>
+                    <td>{{ score["score"] }}</td>
+                    <td>{{ score["submodule_from"]["name"] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</td>
+<td rowspan="{{ row_span }}">
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Sentence</th>
+                <th>Occurrences</th>
+                <th>Source</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for occurrence in fact["sentence_source"]["occurrences"] %}
+                <tr>
+                    <td>{{ occurrence }}</td>
+                    <td>{{ fact["sentence_source"]["occurrences"][occurrence]["n_occurrences"] }}</td>
+                    <td>
+                        {% for source in fact["sentence_source"]["occurrences"][occurrence]["sources"] %}
+                            {{ source["name"] }}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</td>

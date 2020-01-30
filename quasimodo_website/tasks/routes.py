@@ -1,4 +1,5 @@
 from flask import request, current_app, jsonify, url_for, render_template
+from werkzeug.utils import redirect
 
 from quasimodo_website.models.task import Task
 from quasimodo_website.tasks.blueprint import BP
@@ -27,12 +28,16 @@ def run_pipeline():
 @BP.route("/get_meta")
 def get_meta():
     job_id = request.args.get("id", None, type=str)
+    format = request.args.get("format", "html", type=str)
     if job_id is None:
-        return jsonify({})
+        return redirect(url_for("tasks.home"))
     task = Task.query.get(job_id)
     if task is not None:
-        return jsonify(task.get_meta())
-    return jsonify({})
+        if format == "html":
+            return render_template("task_printer.html", meta=task.get_meta())
+        elif format == "json":
+            return jsonify(task.get_meta())
+    return redirect(url_for("tasks.home"))
 
 
 @BP.route("/is_complete")
