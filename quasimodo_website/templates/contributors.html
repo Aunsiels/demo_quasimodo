@@ -1,0 +1,64 @@
+{% extends "homepage.html" %}
+
+{% block inner_content %}
+
+<br><br>
+
+<div class="container">
+  <div class="row">
+    <div class="card col-md-3" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/julien_profile.jpg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Julien Romero</h4>
+        <p class="card-text">Télécom Paris</p>
+        <a href="https://julien-romero.fr" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+    <div class="card col-md-3 offset-md-1" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/simon_profile.jpg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Simon Razniewski</h4>
+        <p class="card-text">Max Planck Institute for Informatics</p>
+        <a href="http://simonrazniewski.com/" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+    <div class="card col-md-3 offset-md-1" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/koninika_profile.jpg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Koninika Pal</h4>
+        <p class="card-text">Max Planck Institute for Informatics</p>
+        <a href="http://people.mpi-inf.mpg.de/~kpal/" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="card col-md-3" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/jeff_profile.jpg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Jeff Z. Pan</h4>
+        <p class="card-text">University of Aberdeen</p>
+        <a href="https://www.abdn.ac.uk/ncs/people/profiles/jeff.z.pan" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+    <div class="card col-md-3 offset-md-1" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/archit_profile.jpg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Archit Sakhadeo</h4>
+        <p class="card-text">University of Alberta</p>
+        <a href="https://gemsbound007.github.io/" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+    <div class="card col-md-3 offset-md-1" style="width:200px">
+      <img class="card-img-top rounded-circle" src="{{ url_for('static', filename='img/gerhard_profile.jpeg') }}" alt="Card image">
+      <div class="card-body">
+        <h4 class="card-title">Gerhard Weikum</h4>
+        <p class="card-text">Max Planck Institute for Informatics</p>
+        <a href="http://people.mpi-inf.mpg.de/~weikum/" class="btn btn-primary">Website</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

@@ -36,3 +36,13 @@ def initialize():
         add_all_facts_to_db(facts, DB)
         return "Initialization done"
     return redirect(url_for("homepage.home"))
+
+
+@BP.route("/contributors")
+def contributors():
+    return render_template("contributors.html")
+
+
+@BP.route("/publications")
+def publications():
+    return render_template("publications.html")
