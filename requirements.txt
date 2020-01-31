@@ -16,5 +16,6 @@ Flask-Session
 pyvirtualdisplay
 rq
 redis
+requests
 selenium
 wheel
