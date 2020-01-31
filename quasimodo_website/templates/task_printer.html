@@ -3,81 +3,90 @@
 {% block inner_content %}
 
 <div class="container">
+    {% set ns = namespace(count=1) %}
     {% for module in meta %}
       <h2>{{ module["step name"] }}</h2>
 
       {% for step in module["steps"] %}
-        <h3>{{ step["name"] }}</h3>
+        {% set ns.count = ns.count + 1 %}
 
-        {% if "modifications" in step %}
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th colspan="7">From</th>
-                        <th colspan="7">To</th>
-                    </tr>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Predicate</th>
-                        <th>Object</th>
-                        <th>Modality</th>
-                        <th>Polarity</th>
-                        <th>Score</th>
-                        <th>Sentences</th>
-                        <th>Subject</th>
-                        <th>Predicate</th>
-                        <th>Object</th>
-                        <th>Modality</th>
-                        <th>Polarity</th>
-                        <th>Score</th>
-                        <th>Sentences</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for modification in step["modifications"] %}
-                        <tr>
-                            {% set fact = modification["from"] %}
-                            {% set row_span = max(1, len(modification["to"])) %}
-                            {% include '_task_fact.html' %}
-                            {% if not modification["to"] %}
-                                <td colspan="7">DELETED></td>
-                            {% else %}
-                                {% for fact in modification["to"] %}
-                                    {% set row_span = 1 %}
-                                    {% include '_task_fact.html' %}
-                                {% endfor %}
-                            {% endif %}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
+        {{ count }}
 
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Predicate</th>
-                        <th>Object</th>
-                        <th>Modality</th>
-                        <th>Polarity</th>
-                        <th>Score</th>
-                        <th>Sentences</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for fact in step.get("facts", []) %}
+        <h2><a data-toggle="collapse" href="#collapseExample{{ ns.count }}">{{ step["name"] }}</a></h2>
+
+        <div class="collapse" id="collapseExample{{ ns.count }}">
+
+            {% if "modifications" in step %}
+                <table class="table table-striped table-bordered">
+                    <thead>
                         <tr>
-                            {% set row_span = 1 %}
-                            {% include '_task_fact.html' %}
+                            <th colspan="7">From</th>
+                            <th colspan="7">To</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
+                        <tr>
+                            <th>Subject</th>
+                            <th>Predicate</th>
+                            <th>Object</th>
+                            <th>Modality</th>
+                            <th>Polarity</th>
+                            <th>Score</th>
+                            <th>Sentences</th>
+                            <th>Subject</th>
+                            <th>Predicate</th>
+                            <th>Object</th>
+                            <th>Modality</th>
+                            <th>Polarity</th>
+                            <th>Score</th>
+                            <th>Sentences</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for modification in step["modifications"] %}
+                            <tr>
+                                {% set fact = modification["from"] %}
+                                {% set row_span = [1, modification["to"]|length]|max %}
+                                {% include '_task_fact.html' %}
+                                {% if not modification["to"] %}
+                                    <td colspan="7">DELETED</td>
+                                {% else %}
+                                    {% for fact in modification["to"] %}
+                                        {% set row_span = 1 %}
+                                        {% include '_task_fact.html' %}</tr><tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Predicate</th>
+                            <th>Object</th>
+                            <th>Modality</th>
+                            <th>Polarity</th>
+                            <th>Score</th>
+                            <th>Sentences</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for fact in step.get("facts", []) %}
+                            <tr>
+                                {% set row_span = 1 %}
+                                {% include '_task_fact.html' %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
 
       {% endfor %}
     {% endfor %}
+
 </div>
 
 {% endblock %}

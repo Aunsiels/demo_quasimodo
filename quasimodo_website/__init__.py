@@ -47,9 +47,10 @@ def create_app(testing=False):
     @app.before_request
     # pylint: disable=unused-variable
     def log_the_request():
-        logger.info("\t".join([get_ip(),
-                               request.url,
-                               str(request.data)
-                               ]))
+        if not app.config["TESTING"]:
+            logger.info("\t".join([get_ip(),
+                                   request.url,
+                                   str(request.data)
+                                   ]))
 
     return app

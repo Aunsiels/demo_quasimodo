@@ -1,6 +1,9 @@
 import json
+import os
 
-from quasimodo_website.models.task import Task
+import requests
+from flask import url_for
+
 from quasimodo_website.tests.browser_test import BrowserTest
 
 
@@ -17,23 +20,33 @@ class TestTaboo(BrowserTest):
         self.assertNotEqual("Subject not valid", self.client.get("/tasks/run_pipeline?subject=elephant").data.decode("utf-8"))
 
     def test_meta_no_job_id(self):
-        self.assertEqual({}, json.loads(self.client.get("/tasks/get_meta").data.decode("utf-8")))
+        self.assertTrue(self.client.get("/tasks/get_meta").location.endswith("/tasks/"))
 
     def test_meta_with_job_id(self):
-        self.client.get("/tasks/run_pipeline?subject=elephant")
+        id = self.client.get("/tasks/run_pipeline?subject=elephant").data.decode("utf-8")
         self.assertEqual({},
-                         json.loads(self.client.get("/tasks/get_meta?id=1").data.decode("utf-8")))
+                         json.loads(self.client.get(
+                             url_for("tasks.get_meta", id=id, format="json")).data.decode("utf-8")))
 
     def test_meta_reload(self):
         id = self.client.get("/tasks/run_pipeline?subject=elephant").data.decode("utf-8").strip()
-        Task.query.get(id).get_rq_job().update([{"step name": "Assertion Generation", "steps": []}])
+        meta = [{"step name": "Assertion Generation", "steps": []}]
+        self.client.post(url_for("tasks.set_meta", id=id), json=meta)
         self.assertEqual([{"step name": "Assertion Generation", "steps": []}],
-                         json.loads(self.client.get("/tasks/get_meta?id=" + id).data.decode("utf-8")))
+                         json.loads(self.client.get(
+                             url_for("tasks.get_meta", id=id, format="json")).data.decode("utf-8")))
+
+    def test_meta_reload_big(self):
+        self.browser.get(self.get_server_url() + "/tasks/run_pipeline?subject=elephant")
+        id = self.browser.page_source.replace("<html><head></head><body>", "").replace("</body></html>", "").strip()
+        meta = json.load(
+                open(os.path.dirname(os.path.realpath(__file__)) + "/meta.json"))
+        requests.post(self.get_server_url() + url_for("tasks.set_meta", id=id), json=meta)
+        self.browser.get(self.get_server_url() + url_for("tasks.get_meta", id=id))
 
     def test_meta_invalid_id(self):
         self.client.get("/tasks/run_pipeline?subject=elephant").data.decode("utf-8").strip()
-        self.assertEqual({},
-                         json.loads(self.client.get("/tasks/get_meta?id=654654").data.decode("utf-8")))
+        self.assertTrue(self.client.get("/tasks/get_meta?id=654654").location.endswith("/tasks/"))
 
     def test_is_complete_no_id(self):
         self.assertEqual("Invalid job ID",
@@ -50,7 +63,7 @@ class TestTaboo(BrowserTest):
 
     def test_is_complete_after_remove(self):
         id = self.client.get("/tasks/run_pipeline?subject=elephant").data.decode("utf-8").strip()
-        Task.query.get(id).get_rq_job().remove()
+        self.client.get(url_for("tasks.remove", id=id))
         self.assertEqual("True",
                          self.client.get("/tasks/is_complete?id=" + id).data.decode("utf-8"))
 

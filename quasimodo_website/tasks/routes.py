@@ -21,7 +21,8 @@ def run_pipeline():
     subject = request.args.get('subject', None, type=str)
     if subject is not None:
         current_app.logger.info("Pipeline for: " + subject)
-        return str(Task.add_task_for_subject(subject))
+        job_id = str(Task.add_task_for_subject(subject))
+        return job_id
     return "Subject not valid"
 
 
@@ -49,3 +50,27 @@ def is_complete():
     if task is None:
         return "Invalid job ID"
     return str(task.is_complete())
+
+
+@BP.route("/set_meta", methods=["POST"])
+def set_meta():
+    if not current_app.config["TESTING"]:
+        return redirect(url_for("homepage.home"))
+    job_id = request.args.get("id", None, type=str)
+    meta = request.json
+    if job_id is None or meta is None:
+        return "Invalid job ID"
+    Task.query.get(job_id).get_rq_job().update(meta)
+    return ""
+
+
+@BP.route("/remove")
+def remove():
+    if not current_app.config["TESTING"]:
+        return redirect(url_for("homepage.home"))
+    job_id = request.args.get("id", None, type=str)
+    Task.query.get(job_id).get_rq_job().remove()
+    return ""
+
+
+

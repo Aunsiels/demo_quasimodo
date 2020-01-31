@@ -12,12 +12,7 @@ COUNTER = 1
 
 # From https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs
 class JobTest(object):
-    meta = [
-        {
-            "step name" : "Assertion Generation",
-            "steps" : []
-        }
-    ]
+    meta = {}
     is_finished = True
     is_failed = False
     next_meta = None
@@ -54,6 +49,7 @@ class Task(DB.Model):
                 return None
             return rq_job
         else:
+            global TEST_JOBS
             return TEST_JOBS.get(self.id, None)
 
     def get_meta(self):
@@ -78,6 +74,7 @@ class Task(DB.Model):
             job = current_app.task_queue.enqueue('run_for_subject.run_for_subject', args=(subject,), timeout=500000)
         else:
             global COUNTER
+            global TEST_JOBS
             job = JobTest(str(COUNTER))
             TEST_JOBS[str(COUNTER)] = job
             COUNTER += 1
