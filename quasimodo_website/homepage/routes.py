@@ -13,7 +13,7 @@ from quasimodo_website.models.fact import read_facts_from_file, \
 
 @BP.route("/")
 def home():
-    return render_template("homepage.html")
+    return render_template("main_page.html")
 
 
 @BP.route("/initialize")

@@ -93,6 +93,9 @@ def guess_word():
     if not is_correct:
         session["wrongly_guessed"] = session.get("wrongly_guessed", [])
         session["wrongly_guessed"].append(guessed)
+    current_app.logger.info("Guessed: " + guessed +
+                            " for: " +
+                            ", ".join(session.get("words_given", [])))
     return jsonify({"guessed": guessed,
                     "is_correct": is_correct})
 

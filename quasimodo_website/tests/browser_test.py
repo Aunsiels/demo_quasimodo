@@ -10,6 +10,10 @@ from quasimodo_website import DB, Config, create_app
 from quasimodo_website.tests.test_database import DB_TEST_PATH
 
 
+FORCE_CLOSE = True
+VISIBLE = 0
+
+
 class WrongUrlException(Exception):
     pass
 
@@ -31,7 +35,7 @@ class BrowserTest(LiveServerTestCase):
 
     @classmethod
     def start_display(cls, width, height):
-        cls.display = Display(visible=0, size=(width, height))
+        cls.display = Display(visible=VISIBLE, size=(width, height))
         cls.display.start()
 
     @classmethod
@@ -43,10 +47,11 @@ class BrowserTest(LiveServerTestCase):
             'download.prompt_for_download': False,
         })
         cls.browser = webdriver.Chrome(chrome_options=chrome_options)
+        cls.browser.maximize_window()
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.start_display(1600, 1024)
+        cls.start_display(1920, 1080)
         cls.start_browser()
 
     def tearDown(self) -> None:
@@ -56,11 +61,12 @@ class BrowserTest(LiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        cls.browser.close()
-        cls.browser.quit()
-        cls.display.stop()
-        cls.browser = None
-        cls.display = None
+        if FORCE_CLOSE:
+            cls.browser.close()
+            cls.browser.quit()
+            cls.display.stop()
+            cls.browser = None
+            cls.display = None
 
     def retry_execute_until(self, action_to_perform, time_limit):
         found_element = False

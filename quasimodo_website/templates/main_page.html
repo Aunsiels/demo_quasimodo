@@ -1,0 +1,88 @@
+{% extends "homepage.html" %}
+
+{% block inner_content %}
+
+<div class="container">
+
+    <h1>Welcome to Quasimodo demo</h1>
+
+    <br>
+
+    <h3>Description</h3>
+
+    <p>
+        Quasimodo is an open-source commonsense knowledge base designed to get relevant properties about entities.
+    </p>
+
+
+    <h3>Abstract</h3>
+
+    <p>
+        Commonsense knowledge about object properties, human behavior and general concepts is crucial for robust AI applications.
+        However, automatic acquisition of this knowledge is challenging because of sparseness and bias in online sources.
+        This paper presents Quasimodo, a methodology and tool suite for distilling commonsense properties from non-standard web sources.
+        We devise novel ways of tapping into search-engine query logs and QA forums, and combining the resulting candidate assertions with statistical
+        cues from encyclopedias, books and image tags in a corroboration step. Unlike prior work on commonsense knowledge bases,
+        Quasimodo focuses on salient properties that are typically associated with certain objects or concepts.
+        Extensive evaluations, including extrinsic use-case studies, show that Quasimodo provides better coverage than
+        state-of-the-art baselines with comparable quality.
+    </p>
+
+
+    <h3>Full Paper</h3>
+
+    The full paper is freely available on <a href="https://arxiv.org/abs/1905.10989">Arxiv</a>.
+    More related papers can be found on <a href="{{ url_for('homepage.publications') }}">the publication page.</a>
+
+    <br><br>
+
+    <h3>Data</h3>
+
+    <p>The Raw data of Quasimodo can be found on the
+        <a href="https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/commonsense/quasimodo/">
+            Max Planck Institute D5's website
+        </a>.
+
+        <br>
+
+        Otherwise, the dataset can be explored in the <a href="{{ url_for('explorer.home') }}">Explorer section</a>.
+        We also added the possibility to search for specific subject, property and object in the
+        <a href="{{ url_for('explorer.search') }}">Search section</a>. Here are some examples of searches:
+    </p>
+    <ul>
+        <li>For subject <a href="{{ url_for('explorer.home', subject='elephant') }}">elephant</a></li>
+        <li>For subject <a href="{{ url_for('explorer.home', subject='musician') }}">musician</a></li>
+        <li>For predicate <a href="{{ url_for('explorer.home', predicate='has_color') }}">has_color</a></li>
+        <li>For object <a href="{{ url_for('explorer.home', object='music') }}">music</a></li>
+    </ul>
+
+    <p>
+        In addition, it is possible to access to more details for a given fact, such as <a href="{{ url_for('explorer.get_fact', id='1') }}">this one</a>.
+    </p>
+
+
+    <h3>Code</h3>
+
+    The code for running Quasimodo is available on <a href="https://github.com/Aunsiels/CSK">Github</a>.
+    The code for running Quasimodo demo is also available on Github <a href="https://github.com/Aunsiels/demo_quasimodo">Github</a>.
+
+
+    <h3>Pipeline</h3>
+
+    Quasimodo pipeline can be summarize by the following diagram. For more information, please refer to our paper.
+
+    <br><br>
+
+    <div class="row">
+            <img src="{{ url_for('static', filename='img/pipeline.png') }}" alt="Pipeline">
+    </div>
+
+    <br>
+
+    Examples of pipeline execution for a single subject can be found on <a href="{{ url_for('tasks.home') }}">the dedicated page</a>.
+
+</div>
+
+
+
+{% endblock %}

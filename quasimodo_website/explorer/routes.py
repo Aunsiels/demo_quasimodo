@@ -38,6 +38,7 @@ def home():
     if polarity is not None:
         facts = facts.filter_by(is_negative=polarity)
 
+    n_facts = facts.count()
     facts = facts.order_by(order).paginate(page,
                                            app.config["FACTS_PER_PAGE"],
                                            False)
@@ -54,6 +55,7 @@ def home():
                            next_url=next_url,
                            prev_url=prev_url,
                            order=order_str,
+                           n_facts=n_facts,
                            additional_args=new_args)
 
 

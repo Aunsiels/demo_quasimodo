@@ -6,6 +6,9 @@
     {% endblock %}
 
     {% if facts %}
+        <div class="container">
+            <p>Quasimodo contains <b>{{ n_facts }}</b> result(s) for your request.</p>
+        </div>
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -53,9 +56,9 @@
                     {% else %}
                         <td>POSITIVE</td>
                     {% endif %}
-                    <td>{{ "{0:.2f}".format(fact.plausibility) }}</td>
-                    <td>{{ "{0:.2f}".format(fact.typicality) }}</td>
-                    <td>{{ "{0:.2f}".format(fact.saliency) }}</td>
+                    <td>{{ "{0:.4f}".format(fact.plausibility) }}</td>
+                    <td>{{ "{0:.4f}".format(fact.typicality) }}</td>
+                    <td>{{ "{0:.4f}".format(fact.saliency) }}</td>
                     <td><a href="{{url_for('explorer.get_fact', id=fact.id) }}"><i class="fas fa-search"></i></a>
                         <span class="positive-feedback" onClick="sendFeedback('{{url_for('explorer.give_feedback', id=fact.id, feedback='POSITIVE') }}')"><i class="fas fa-check" style="color:#2dd638;"></i></span>
                         <span class="negative-feedback" onClick="sendFeedback('{{url_for('explorer.give_feedback', id=fact.id, feedback='NEGATIVE') }}')"><i class="fas fa-times" style="color:#f52727;"></i></span>
@@ -76,7 +79,7 @@
             </ul>
         </nav>
     {% elif not form %}
-        <div>
+        <div class="container">
             No result was found.
         </div>
     {% endif %}

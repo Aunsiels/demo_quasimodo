@@ -1,9 +1,7 @@
 import os
-import time
 import unittest
 from urllib.request import urlopen
 
-from selenium.webdriver import ActionChains
 
 from quasimodo_website import DB
 from quasimodo_website.models.fact import add_all_facts_to_db, read_facts
@@ -65,6 +63,10 @@ class TestExplorer(BrowserTest):
         self.browser.get(self.get_server_url() + "/explorer?page=2")
         rows = self.browser.find_elements_by_xpath("//table//tr")
         self.assertEqual(len(rows), 5)
+
+    def test_show_total(self):
+        self.browser.get(self.get_server_url() + "/explorer")
+        self.assertIn("10", self.browser.page_source)
 
     def test_get_next_page(self):
         self.browser.get(self.get_server_url() + "/explorer")
@@ -136,6 +138,13 @@ class TestExplorer(BrowserTest):
         self.browser.find_element_by_name("search").click()
         subjects_on_page = self.get_column_values(SUBJECT_COLUMN)
         self.assertEqual(set(subjects_on_page), {"snow"})
+
+    def test_search_by_subject_count(self):
+        self.browser.get(self.get_server_url() + "/explorer/search")
+        subject = self.browser.find_element_by_name("subject")
+        subject.send_keys("snow")
+        self.browser.find_element_by_name("search").click()
+        self.assertIn("1", self.browser.page_source)
 
     def test_search_by_predicate(self):
         self.browser.get(self.get_server_url() + "/explorer/search")

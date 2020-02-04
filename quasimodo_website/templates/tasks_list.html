@@ -1,15 +1,13 @@
 {% extends "homepage.html" %}
 
 {% block inner_content %}
-
     {% if tasks %}
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
                     <th>Subject</th>
                     <th>Complete</th>
-                    <th>View</th>
-                    <th>Stop</th>
+                    <th>View Pipeline</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,7 +16,6 @@
                     <td>{{ task.subject }}</td>
                     <td>{% if task.is_complete() %}Yes{% else %}No{% endif %}</td>
                     <td><a href="{{ url_for('tasks.get_meta', id=task.id) }}">View</a></td>
-                    <td><a href="">Stop</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -35,7 +32,7 @@
             </ul>
         </nav>
     {% else %}
-        <div>
+        <div class="container">
             No task found.
         </div>
     {% endif %}
