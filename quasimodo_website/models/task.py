@@ -1,7 +1,8 @@
+from datetime import datetime
+
 import redis
 import rq
 from flask import current_app
-from datetime import datetime
 
 from quasimodo_website import DB
 
@@ -11,17 +12,17 @@ COUNTER = 1
 
 
 # From https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xxii-background-jobs
-class JobTest(object):
+class JobTest():
     meta = {}
     is_finished = True
     is_failed = False
     next_meta = None
 
     def __init__(self, id):
-        self.id = id
+        self.identifier = id
 
     def get_id(self):
-        return self.id
+        return self.identifier
 
     def update(self, next_meta):
         self.next_meta = next_meta
@@ -32,7 +33,7 @@ class JobTest(object):
 
     def remove(self):
         global TEST_JOBS
-        del TEST_JOBS[self.id]
+        del TEST_JOBS[self.identifier]
 
 
 class Task(DB.Model):
@@ -49,17 +50,15 @@ class Task(DB.Model):
             except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
                 return None
             return rq_job
-        else:
-            global TEST_JOBS
-            return TEST_JOBS.get(self.id, None)
+        global TEST_JOBS
+        return TEST_JOBS.get(self.id, None)
 
     def get_meta(self):
         job = self.get_rq_job()
         if job is not None:
             job.refresh()
             return job.meta
-        else:
-            return {}
+        return {}
 
     def is_complete(self):
         if not self.complete:
