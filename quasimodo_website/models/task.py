@@ -44,7 +44,8 @@ class Task(DB.Model):
     def get_rq_job(self):
         if not current_app.config["TESTING"]:
             try:
-                rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
+                rq_job = rq.job.Job.fetch(self.id,
+                                          connection=current_app.redis)
             except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
                 return None
             return rq_job
@@ -71,7 +72,10 @@ class Task(DB.Model):
     @staticmethod
     def add_task_for_subject(subject):
         if not current_app.config["TESTING"]:
-            job = current_app.task_queue.enqueue('run_for_subject.run_for_subject', args=(subject,), timeout=500000)
+            job = current_app.task_queue.enqueue(
+                'run_for_subject.run_for_subject',
+                args=(subject,),
+                timeout=500000)
         else:
             global COUNTER
             global TEST_JOBS
@@ -82,4 +86,3 @@ class Task(DB.Model):
         DB.session.add(task)
         DB.session.commit()
         return job.get_id()
-
