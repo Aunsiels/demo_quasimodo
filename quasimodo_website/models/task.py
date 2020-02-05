@@ -74,7 +74,8 @@ class Task(DB.Model):
             job = current_app.task_queue.enqueue(
                 'run_for_subject.run_for_subject',
                 args=(subject,),
-                timeout=500000)
+                timeout=500000,
+                result_ttl= 86400 * 10000)
         else:
             global COUNTER
             global TEST_JOBS
