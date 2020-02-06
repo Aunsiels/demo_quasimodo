@@ -2,8 +2,10 @@ import json
 
 from selenium.webdriver.common.keys import Keys
 
+from quasimodo_website import DB
+from quasimodo_website.models.fact import read_facts, add_all_facts_to_db
 from quasimodo_website.tests.browser_test import BrowserTest
-
+from quasimodo_website.tests.test_explorer import SAMPLE_PATH
 
 TIME_TO_LOAD = 60
 
@@ -11,8 +13,11 @@ TIME_TO_LOAD = 60
 class TestTaboo(BrowserTest):
 
     def setUp(self) -> None:
+        self.facts = read_facts(SAMPLE_PATH)
+        add_all_facts_to_db(self.facts, DB)
         self.browser.get(self.get_server_url() + "/taboo/initialize")
         self.browser.get(self.get_server_url() + "/taboo/start_new_game")
+        self.client = self.app.test_client()
 
     def test_can_access(self):
         self.browser.get(self.get_server_url() + "/taboo")
@@ -148,3 +153,10 @@ class TestTaboo(BrowserTest):
         chat = self.get_chat()
         self.assertIn("The given word is too similar to the word to guess",
                       chat[-1])
+
+    def test_generate_taboo_card(self):
+        self.browser.get(self.get_server_url() +\
+                         "/taboo/generate_card?subject=musician&n_words=2"
+                         "&format=json")
+        objects = self.get_json()
+        self.assertEqual(len(objects), 2)

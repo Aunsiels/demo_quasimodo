@@ -32,7 +32,7 @@ class TestDatabase(LiveServerTestCase):
         DB.drop_all()
 
     def test_read_quasimodo(self):
-        self.assertEqual(len(self.facts), 10)
+        self.assertEqual(len(self.facts), 18)
 
     def test_contains_subject(self):
         self.assertEqual(self.first_fact.subject, "musician")
@@ -78,7 +78,7 @@ class TestDatabase(LiveServerTestCase):
 
     def test_add_all_database(self):
         add_all_facts_to_db(self.facts, DB)
-        self.assertEqual(len(Fact.query.all()), 10)
+        self.assertEqual(len(Fact.query.all()), 18)
 
     def test_paginate(self):
         add_all_facts_to_db(self.facts, DB)

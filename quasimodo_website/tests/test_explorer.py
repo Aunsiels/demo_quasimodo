@@ -62,7 +62,7 @@ class TestExplorer(BrowserTest):
     def test_has_rows_next(self):
         self.browser.get(self.get_server_url() + "/explorer?page=2")
         rows = self.browser.find_elements_by_xpath("//table//tr")
-        self.assertEqual(len(rows), 5)
+        self.assertEqual(len(rows), 7)
 
     def test_show_total(self):
         self.browser.get(self.get_server_url() + "/explorer")
@@ -75,13 +75,13 @@ class TestExplorer(BrowserTest):
             0)
         self.browser.find_element_by_link_text("Next facts").click()
         rows = self.browser.find_elements_by_xpath("//table//tr")
-        self.assertEqual(len(rows), 5)
+        self.assertEqual(len(rows), 7)
 
     def test_get_previous_page(self):
         self.browser.get(self.get_server_url() + "/explorer?page=2")
         self.assertEqual(
             len(self.browser.find_elements_by_link_text("Next facts")),
-            0)
+            1)
         self.browser.find_element_by_link_text("Previous facts").click()
         rows = self.browser.find_elements_by_xpath("//table//tr")
         self.assertEqual(len(rows), 7)

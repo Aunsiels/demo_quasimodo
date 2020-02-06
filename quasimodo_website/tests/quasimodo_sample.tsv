@@ -8,3 +8,11 @@ swimming	has_property	fun	 	0	0.874654654	swimming is fun x#x10 // swimming so i
 heat	bend	light	 	0	0.86454546546	heat bend light x#x10	0.0025589112459098507	0.11207026846860363
 fish	live in	water	 	0	0.8546546546546505	fish live in water x#x4 // fishes live in water x#x3 // fishes adapt to live in water x#x1	0.0036500721722362473	0.020160006350215746
 neon	produce	light	 	1	0.8454654654654454	neon produce light x#x6 // neon and other noble gases produce light x#x2	0.014397593607600167	0.039363374210104975
+music	affect	people	 	0	0.9999699401526035	music affect people x#x8 // music affect people and culture x#x2	0.0027204082740079024	0.08906387687663998
+music	improve	performance	 	0	0.9999300719995676	music improve performance x#x2	0.0027202998130941955	0.22920887866742967
+music	be made from	guitar	 	0	0.9999213792001719	music is made from a guitar x#x1	0.0027202761644199197	1.454505290560674
+musician	make	music	 	0	0.9999999991040696	musicians make music x#x12 // musicians make / invent music x#x1	0.010969917368187932	0.04213201975478069
+musician	earn	money	 	0	0.9962639744551379	musicians earn money x#x6 // musician earn money x#x2	0.008956124488306244	0.025373933465873348
+stage	be in	nascar work	 	0	0.27204235492805134	stages in nascar work x#x1	0.010724517502961576	0.40070377894395093
+money	buy	happiness	 	0	0.9999639252784971	money buy happiness x#x12 // money buy you happiness x#x2	0.004983381642487409	1.4263100111469116
+musician	hear on	stage	 	0	0.9999884644553628	musicians hear themselves on stage x#x2	0.008989606574332398	1.672434172069162

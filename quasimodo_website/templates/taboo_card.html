@@ -1,0 +1,60 @@
+{% extends "homepage.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block inner_content %}
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col" align="center">
+            {{ wtf.quick_form(form) }}
+        </div>
+
+    </div>
+    <br>
+{% if card %}
+
+        <div class="row">
+            <div class="col" align="center">
+                <h1>Generated Card</h1>
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col" align="center">
+                <div class="card" style="width: 18rem;" id="tabooCard">
+                    <div class="card-header">
+                        <p id="card_title">{{ subject }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush" id="forbidden_words">
+                          <li class="list-group-item"><p id="forbidden_word0">{{ card[0] }}</p></li>
+                          <li class="list-group-item"><p id="forbidden_word1">{{ card[1] }}</p></li>
+                          <li class="list-group-item"><p id="forbidden_word2">{{ card[2] }}</p></li>
+                          <li class="list-group-item"><p id="forbidden_word3">{{ card[3] }}</p></li>
+                          <li class="list-group-item"><p id="forbidden_word4">{{ card[4] }}</p></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+{% elif subject %}
+
+        <div class="row">
+            <div class="col" align="center">
+                <h1>We were not able to generate a card for {{ subject }}</h1>
+                <br>
+            </div>
+        </div>
+
+{% else %}
+
+
+{% endif %}
+
+</div>
+
+{% endblock %}

@@ -5,6 +5,7 @@ from flask import session, request, jsonify, render_template, current_app
 from sqlalchemy import func
 
 from quasimodo_website.models import Fact
+from quasimodo_website.models.subject_form import SubjectForm
 from quasimodo_website.models.taboo_card import TabooCard
 from quasimodo_website.taboo.blueprint import BP
 from quasimodo_website import DB
@@ -36,14 +37,14 @@ def try_to_guess(words_given, wrongly_guessed,
     if not words_given:
         return "No idea"
     for word in words_given:
-        sub_query = Fact.query.filter(Fact.object.like("%" + word + "%"))\
-                              .with_entities(Fact.subject, score_criterion)
+        sub_query = Fact.query.filter(Fact.object.like("%" + word + "%")) \
+            .with_entities(Fact.subject, score_criterion)
         if query is None:
             query = sub_query
         else:
             query = query.union(sub_query)
-    query = query.filter(Fact.subject.notin_(wrongly_guessed))\
-                 .group_by(Fact.subject)
+    query = query.filter(Fact.subject.notin_(wrongly_guessed)) \
+        .group_by(Fact.subject)
     query = query.with_entities(Fact.subject, func.max(score_criterion))
     results = query.all()
     if not results:
@@ -135,3 +136,33 @@ def initialize():
         DB.session.add_all(cards)
         DB.session.commit()
     return jsonify({"status": "Done"})
+
+
+@BP.route("/generate_card", methods=["GET", "POST"])
+def generate_card():
+    form = SubjectForm()
+    if request.method == "POST" and form.validate_on_submit():
+        subject = form.subject.data.strip().lower()
+    else:
+        subject = request.args.get('subject', None, type=str)
+    format = request.args.get("format", "html", type=str)
+    if subject is None:
+        if format == "json":
+            return jsonify({})
+        return render_template("taboo_card.html", form=form)
+    n_words = request.args.get("n_words", 5, type=int)
+    subjects = Fact.query.with_entities(Fact.subject).distinct(Fact.subject).subquery()
+    objects = Fact.query.with_entities(Fact.object)\
+        .filter(Fact.subject == subject) \
+        .filter(Fact.object.in_(subjects))\
+        .group_by(Fact.object)\
+        .order_by(func.sum(Fact.plausibility).desc())\
+        .limit(n_words)\
+        .all()
+    objects = [x[0] for x in objects]
+    if format == "json":
+        return jsonify(objects)
+    return render_template("taboo_card.html",
+                           subject=subject,
+                           card=objects,
+                           form=form)

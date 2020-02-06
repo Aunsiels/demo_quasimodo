@@ -30,11 +30,6 @@ class TestHomepage(BrowserTest):
         final_url = "/explorer/"
         self.check_click_text_goes_to(test_to_click, final_url)
 
-    def test_click_taboo(self):
-        test_to_click = "Play Taboo"
-        final_url = "/taboo/"
-        self.check_click_text_goes_to(test_to_click, final_url)
-
 
 if __name__ == '__main__':
     unittest.main()
