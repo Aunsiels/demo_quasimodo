@@ -47,7 +47,7 @@ class Codenames(object):
 
     def get_assassin_card(self):
         return self.assassin_card
-    c
+
 
 def read_predefined_words(filename):
     predefined_words = []
