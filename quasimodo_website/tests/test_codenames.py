@@ -21,9 +21,10 @@ class Codenames(object):
         self.blue_cards_remaining = None
         self.winner = None
         self.initialize_words(filename)
-        self.starting_color = random.choice([CodenameColor.RED, CodenameColor.BLUE])
+        self.current_player = random.choice([CodenameColor.RED, CodenameColor.BLUE])
         self.initialize_color_cards()
         self.found_assassin = False
+        self.has_played_already = False
 
     def initialize_words(self, filename):
         predefined_words = read_predefined_words(filename)
@@ -32,7 +33,7 @@ class Codenames(object):
     def initialize_color_cards(self):
         random_indexes = random.sample(range(N_CARDS), k=N_CARDS_TO_GUESS + 1)
         middle_index_under = int(N_CARDS_TO_GUESS / 2)
-        splitting_index = middle_index_under if self.starting_color is CodenameColor.BLUE else middle_index_under + 1
+        splitting_index = middle_index_under if self.current_player is CodenameColor.BLUE else middle_index_under + 1
         self.red_cards = [self.words[x] for x in random_indexes[:splitting_index]]
         self.red_cards_remaining = self.red_cards[:]
         self.blue_cards = [self.words[x] for x in random_indexes[splitting_index:N_CARDS_TO_GUESS]]
@@ -49,7 +50,7 @@ class Codenames(object):
             return self.blue_cards
 
     def get_starting_color(self):
-        return self.starting_color
+        return self.current_player
 
     def get_assassin_card(self):
         return self.assassin_card
@@ -72,10 +73,17 @@ class Codenames(object):
     def guess(self, word, color):
         if self.is_finished():
             raise GameFinishedException
+        if self.current_player != color:
+            raise NotYourTurnException
+        self.has_played_already = True
         if word in self.red_cards_remaining:
             self.red_cards_remaining.remove(word)
+            if color == CodenameColor.BLUE:
+                self.current_player = CodenameColor.RED
         if word in self.blue_cards_remaining:
             self.blue_cards_remaining.remove(word)
+            if color == CodenameColor.RED:
+                self.current_player = CodenameColor.BLUE
         if word == self.assassin_card:
             self.found_assassin = True
             if color == CodenameColor.RED:
@@ -88,6 +96,22 @@ class Codenames(object):
             return self.red_cards_remaining
         else:
             return self.blue_cards_remaining
+
+    def get_current_player(self):
+        return self.current_player
+
+    def pass_turn(self, color):
+        if self.is_finished():
+            raise GameFinishedException
+        if not self.has_played_already:
+            raise DidNotPlayException
+        if color != self.current_player:
+            raise NotYourTurnException
+        if self.current_player == CodenameColor.RED:
+            self.current_player = CodenameColor.BLUE
+        else:
+            self.current_player = CodenameColor.RED
+        self.has_played_already = False
 
 
 def read_predefined_words(filename):
@@ -108,6 +132,14 @@ class GameNotFinishedException(Exception):
 
 
 class GameFinishedException(Exception):
+    pass
+
+
+class DidNotPlayException(Exception):
+    pass
+
+
+class NotYourTurnException(Exception):
     pass
 
 
@@ -224,49 +256,123 @@ class TestCodenames(unittest.TestCase):
         with self.assertRaises(GameNotFinishedException) as _:
             self.codenames.get_winner()
 
-    def test_guess_good_one_red(self):
-        red_cards_before = self.red_cards
-        self.codenames.guess(red_cards_before[0], CodenameColor.RED)
-        red_cards_after = self.codenames.get_remaining_words_by_color(CodenameColor.RED)
-        red_cards = self.codenames.get_all_words_by_color(CodenameColor.RED)
-        self.assertEqual(len(red_cards_before), len(red_cards_after) + 1)
-        self.assertEqual(red_cards, red_cards_before)
-
-    def test_guess_good_one_blue(self):
-        blue_cards_before = self.blue_cards
-        self.codenames.guess(blue_cards_before[0], CodenameColor.RED)
-        blue_cards_after = self.codenames.get_remaining_words_by_color(CodenameColor.BLUE)
-        blue_cards = self.codenames.get_all_words_by_color(CodenameColor.BLUE)
-        self.assertEqual(len(blue_cards_before), len(blue_cards_after) + 1)
-        self.assertEqual(blue_cards, blue_cards_before)
+    def test_guess_good_one(self):
+        if self.codenames.current_player == CodenameColor.BLUE:
+            blue_cards_before = self.blue_cards
+            self.codenames.guess(blue_cards_before[0], CodenameColor.BLUE)
+            blue_cards_after = self.codenames.get_remaining_words_by_color(CodenameColor.BLUE)
+            blue_cards = self.codenames.get_all_words_by_color(CodenameColor.BLUE)
+            self.assertEqual(len(blue_cards_before), len(blue_cards_after) + 1)
+            self.assertEqual(blue_cards, blue_cards_before)
+        else:
+            red_cards_before = self.red_cards
+            self.codenames.guess(red_cards_before[0], CodenameColor.RED)
+            red_cards_after = self.codenames.get_remaining_words_by_color(CodenameColor.RED)
+            red_cards = self.codenames.get_all_words_by_color(CodenameColor.RED)
+            self.assertEqual(len(red_cards_before), len(red_cards_after) + 1)
+            self.assertEqual(red_cards, red_cards_before)
 
     def test_guess_assassin(self):
+        self.codenames.current_player = CodenameColor.RED
         assassin_card = self.codenames.get_assassin_card()
         self.codenames.guess(assassin_card, CodenameColor.RED)
         self.assertTrue(self.codenames.is_finished())
 
     def test_get_winner_assassin(self):
         assassin_card = self.codenames.get_assassin_card()
-        self.codenames.guess(assassin_card, CodenameColor.RED)
-        self.assertEqual(self.codenames.get_winner(), CodenameColor.BLUE)
+        if self.codenames.get_current_player() == CodenameColor.RED:
+            self.codenames.guess(assassin_card, CodenameColor.RED)
+            self.assertEqual(self.codenames.get_winner(), CodenameColor.BLUE)
+        else:
+            self.codenames.guess(assassin_card, CodenameColor.BLUE)
+            self.assertEqual(self.codenames.get_winner(), CodenameColor.RED)
 
     def test_winner_all_cards_red(self):
+        self.codenames.current_player = CodenameColor.RED
         for card in self.red_cards:
             self.codenames.guess(card, CodenameColor.RED)
         self.assertTrue(self.codenames.is_finished())
         self.assertEqual(self.codenames.get_winner(), CodenameColor.RED)
 
     def test_winner_all_cards_blue(self):
+        self.codenames.current_player = CodenameColor.RED
         for card in self.blue_cards:
             self.codenames.guess(card, CodenameColor.RED)
+            self.codenames.current_player = CodenameColor.RED
         self.assertTrue(self.codenames.is_finished())
         self.assertEqual(self.codenames.get_winner(), CodenameColor.BLUE)
 
     def test_cannot_guess_once_game_is_finished(self):
-        for card in self.red_cards:
-            self.codenames.guess(card, CodenameColor.RED)
-        with self.assertRaises(GameFinishedException) as _:
-            self.codenames.guess(self.blue_cards[0], CodenameColor.RED)
+        if self.codenames.get_current_player() == CodenameColor.RED:
+            for card in self.red_cards:
+                self.codenames.guess(card, CodenameColor.RED)
+            with self.assertRaises(GameFinishedException) as _:
+                self.codenames.guess(self.blue_cards[0], CodenameColor.RED)
+        else:
+            for card in self.blue_cards:
+                self.codenames.guess(card, CodenameColor.BLUE)
+            with self.assertRaises(GameFinishedException) as _:
+                self.codenames.guess(self.red_cards[0], CodenameColor.BLUE)
+
+    def test_get_current_player(self):
+        self.assertIn(self.codenames.get_current_player(), [CodenameColor.RED, CodenameColor.BLUE])
+
+    def test_cannot_pass_without_playing(self):
+        with self.assertRaises(DidNotPlayException):
+            self.codenames.pass_turn(self.codenames.get_current_player())
+
+    def test_can_pass_if_played(self):
+        current_player = self.codenames.get_current_player()
+        self.guess_a_card_for_current_player()
+        self.codenames.pass_turn(self.codenames.get_current_player())
+        self.assertNotEqual(current_player, self.codenames.get_current_player())
+
+    def guess_a_card_for_current_player(self):
+        if self.codenames.get_current_player() == CodenameColor.RED:
+            self.codenames.guess(self.red_cards[0], CodenameColor.RED)
+        else:
+            self.codenames.guess(self.blue_cards[0], CodenameColor.BLUE)
+
+    def test_cannot_pass_if_it_is_not_our_turn(self):
+        self.guess_a_card_for_current_player()
+        current_player = self.codenames.get_current_player()
+        if current_player == CodenameColor.RED:
+            other_player = CodenameColor.BLUE
+        else:
+            other_player = CodenameColor.RED
+        with self.assertRaises(NotYourTurnException):
+            self.codenames.pass_turn(other_player)
+
+    def test_cannot_pass_twice_without_guessing_again(self):
+        self.guess_a_card_for_current_player()
+        self.codenames.pass_turn(self.codenames.get_current_player())
+        with self.assertRaises(DidNotPlayException):
+            self.codenames.pass_turn(self.codenames.get_current_player())
+
+    def test_cannot_guess_if_it_is_not_your_turn(self):
+        if self.codenames.get_current_player() == CodenameColor.RED:
+            with self.assertRaises(NotYourTurnException):
+                self.codenames.guess(self.blue_cards[0], CodenameColor.BLUE)
+        else:
+            with self.assertRaises(NotYourTurnException):
+                self.codenames.guess(self.red_cards[0], CodenameColor.RED)
+
+    def test_cannot_keep_guessing_if_wrong_card(self):
+        self.codenames.current_player = CodenameColor.RED
+        self.codenames.guess(self.blue_cards[0], CodenameColor.RED)
+        with self.assertRaises(NotYourTurnException):
+            self.codenames.guess(self.blue_cards[1], CodenameColor.RED)
+
+    def test_starting_current_player_has_one_more_card(self):
+        if self.codenames.get_current_player() == CodenameColor.RED:
+            self.assertEqual(len(self.red_cards), len(self.blue_cards) + 1)
+        else:
+            self.assertEqual(len(self.blue_cards), len(self.red_cards) + 1)
+
+    def test_cannot_pass_if_finished(self):
+        self.codenames.guess(self.codenames.assassin_card, self.codenames.get_current_player())
+        with self.assertRaises(GameFinishedException):
+            self.codenames.pass_turn(self.codenames.get_current_player())
 
 
 if __name__ == '__main__':
