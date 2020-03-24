@@ -90,30 +90,29 @@ class Fact(DB.Model):
     def get_examples_from_line(cls, line):
         if len(line) != 9:
             return []
-        examples = cls.get_multiple_sentence_column(line, 6)
+        examples = cls.get_multiple_sentence_column(line, 6, 3)
         return examples
 
     @classmethod
     def get_modalities_from_line(cls, line):
-        examples = cls.get_multiple_sentence_column(line, 3)
+        examples = cls.get_multiple_sentence_column(line, 3, 2)
         return examples
 
     @classmethod
-    def get_multiple_sentence_column(cls, line, column_number):
+    def get_multiple_sentence_column(cls, line, column_number, components):
         if not line[column_number].strip():
             return []
         raw_examples_tuples = [example.split(" x#x")
                                for example in
                                line[column_number].split(" // ")]
-        if raw_examples_tuples:
-            if len(raw_examples_tuples[0]) == 2:
-                examples = [(example[0], int(example[1]))
-                            for example in raw_examples_tuples]
-            else:
-                examples = [(example[0], int(example[1]), example[2])
-                            for example in raw_examples_tuples]
+        if components == 2:
+            examples = [(example[0], int(example[1]))
+                        for example in raw_examples_tuples
+                        if len(example) == 2]
         else:
-            examples = []
+            examples = [(example[0], int(example[1]), example[2])
+                        for example in raw_examples_tuples
+                        if len(example) == 3]
         return examples
 
     @classmethod
