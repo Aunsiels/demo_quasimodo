@@ -61,6 +61,7 @@ class TestTaboo(BrowserTest):
         requests.post(url_set, json=meta)
         url_meta = self.get_server_url() + url_for("tasks.get_meta", id=id)
         self.browser.get(url_meta)
+        self.assertNotIn("Internal Server Error", self.browser.page_source)
 
     def test_meta_invalid_id(self):
         self.client.get("/tasks/run_pipeline?subject=elephant")
