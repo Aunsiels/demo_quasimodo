@@ -24,7 +24,8 @@ def create_app(testing=False):
     if not testing:
         if not os.path.exists('logs'):
             os.makedirs('logs')
-        fileConfig(os.path.abspath(os.path.dirname(__file__)) + '/logging.cfg')
+        fileConfig(os.path.abspath(os.path.dirname(__file__)) +
+                   '/../logging.cfg')
     app = Flask(__name__)
     app.config.from_object(Config)
     Bootstrap(app)
