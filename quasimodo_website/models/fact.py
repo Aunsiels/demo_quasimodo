@@ -2,7 +2,7 @@ import json
 
 from quasimodo_website import DB
 
-LONG_ELEMENTS_SIZE = 8192
+LONG_ELEMENTS_SIZE = 16386
 
 ELEMENTS_SIZE = 256
 
