@@ -52,11 +52,11 @@ class TestDatabase(LiveServerTestCase):
     def test_contains_plausibility(self):
         self.assertAlmostEqual(self.first_fact.plausibility, 1.0, 1)
 
-    def test_contains_typicality(self):
-        self.assertAlmostEqual(self.first_fact.typicality, 0.0, 1)
+    def test_contains_neighborhood_sigma(self):
+        self.assertAlmostEqual(self.first_fact.neighborhood_sigma, 0.8, 1)
 
-    def test_contains_saliency(self):
-        self.assertAlmostEqual(self.first_fact.saliency, 0.0, 1)
+    def test_contains_local_sigma(self):
+        self.assertAlmostEqual(self.first_fact.local_sigma, 0.055, 1)
 
     def test_contains_examples(self):
         self.assertEqual(len(self.first_fact.examples), 2)

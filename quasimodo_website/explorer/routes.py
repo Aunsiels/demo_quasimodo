@@ -65,13 +65,13 @@ def get_order(order_str):
     elif order_str == "pa":
         order = asc(Fact.plausibility)
     elif order_str == "td":
-        order = desc(Fact.typicality)
+        order = desc(Fact.neighborhood_sigma)
     elif order_str == "ta":
-        order = asc(Fact.typicality)
+        order = asc(Fact.neighborhood_sigma)
     elif order_str == "sd":
-        order = desc(Fact.saliency)
+        order = desc(Fact.local_sigma)
     elif order_str == "sa":
-        order = asc(Fact.saliency)
+        order = asc(Fact.local_sigma)
     else:
         order = desc(Fact.plausibility)
     return order

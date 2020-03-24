@@ -16,8 +16,8 @@ class Fact(DB.Model):
     __modality_json = DB.Column(DB.String(LONG_ELEMENTS_SIZE), index=True)
     is_negative = DB.Column(DB.Boolean)
     plausibility = DB.Column(DB.Float)
-    typicality = DB.Column(DB.Float)
-    saliency = DB.Column(DB.Float)
+    neighborhood_sigma = DB.Column(DB.Float)
+    local_sigma = DB.Column(DB.Float)
     __examples = []
     __examples_json = DB.Column(DB.String(LONG_ELEMENTS_SIZE))
 
@@ -82,8 +82,8 @@ class Fact(DB.Model):
                     modality=modalities,
                     is_negative=line[4] == "1",
                     plausibility=float(line[5]),
-                    typicality=float(line[7 - modifier]),
-                    saliency=float(line[8 - modifier]),
+                    neighborhood_sigma=float(line[7 - modifier]),
+                    local_sigma=float(line[8 - modifier]),
                     examples=examples)
 
     @classmethod
@@ -105,8 +105,15 @@ class Fact(DB.Model):
         raw_examples_tuples = [example.split(" x#x")
                                for example in
                                line[column_number].split(" // ")]
-        examples = [(example[0], int(example[1]))
-                    for example in raw_examples_tuples]
+        if raw_examples_tuples:
+            if len(raw_examples_tuples[0]) == 2:
+                examples = [(example[0], int(example[1]))
+                            for example in raw_examples_tuples]
+            else:
+                examples = [(example[0], int(example[1]), example[2])
+                            for example in raw_examples_tuples]
+        else:
+            examples = []
         return examples
 
     @classmethod

@@ -50,12 +50,12 @@
             <td>{{ "{0:.4f}".format(fact.plausibility) }}</td>
         </tr>
         <tr>
-            <th>Typicality</th>
-            <td>{{ "{0:.4f}".format(fact.typicality) }}</td>
+            <th>Neighborhood Sigma</th>
+            <td>{{ "{0:.4f}".format(fact.neighborhood_sigma) }}</td>
         </tr>
         <tr>
-            <th>Saliency</th>
-            <td>{{ "{0:.4f}".format(fact.saliency) }}</td>
+            <th>Local Sigma</th>
+            <td>{{ "{0:.4f}".format(fact.local_sigma) }}</td>
         </tr>
         <tr>
             <th>Example Sentences</th>
@@ -65,6 +65,7 @@
                         <tr>
                             <th>Sentence</th>
                             <th>Occurrences</th>
+                            <th>Source</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -72,6 +73,7 @@
                         <tr>
                             <td>{{ sentence[0] }}</td>
                             <td>{{ sentence[1] }}</td>
+                            <td>{{ sentence[2] }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

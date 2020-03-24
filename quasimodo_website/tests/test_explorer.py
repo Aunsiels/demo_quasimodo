@@ -13,9 +13,9 @@ SAMPLE_PATH = os.path.abspath(os.path.dirname(__file__)) +\
 
 POLARITY_COLUMN = 4
 
-SALIENCY_COLUMN = 7
+LOCAL_SIGMA_COLUMN = 7
 
-TYPICALITY_COLUMN = 6
+NEIGHBORHOOD_SIGMA_COLUMN = 6
 
 PLAUSIBILITY_COLUMN = 5
 
@@ -66,7 +66,7 @@ class TestExplorer(BrowserTest):
 
     def test_show_total(self):
         self.browser.get(self.get_server_url() + "/explorer")
-        self.assertIn("10", self.browser.page_source)
+        self.assertIn("18", self.browser.page_source)
 
     def test_get_next_page(self):
         self.browser.get(self.get_server_url() + "/explorer")
@@ -100,19 +100,19 @@ class TestExplorer(BrowserTest):
 
     def test_sorted_td(self):
         self.browser.get(self.get_server_url() + "/explorer?order=td")
-        self.check_if_is_sorted_column(TYPICALITY_COLUMN, True)
+        self.check_if_is_sorted_column(NEIGHBORHOOD_SIGMA_COLUMN, True)
 
     def test_sorted_ta(self):
         self.browser.get(self.get_server_url() + "/explorer?order=ta")
-        self.check_if_is_sorted_column(TYPICALITY_COLUMN)
+        self.check_if_is_sorted_column(NEIGHBORHOOD_SIGMA_COLUMN)
 
     def test_sorted_sd(self):
         self.browser.get(self.get_server_url() + "/explorer?order=sd")
-        self.check_if_is_sorted_column(SALIENCY_COLUMN, True)
+        self.check_if_is_sorted_column(LOCAL_SIGMA_COLUMN, True)
 
     def test_sorted_sa(self):
         self.browser.get(self.get_server_url() + "/explorer?order=sa")
-        self.check_if_is_sorted_column(SALIENCY_COLUMN)
+        self.check_if_is_sorted_column(LOCAL_SIGMA_COLUMN)
 
     def check_if_is_sorted_column(self, column_number, reverse=False):
         column_values = self.get_column_values(column_number)
