@@ -34,6 +34,7 @@ def initialize():
         facts = read_facts_from_file(file)
         current_app.logger.info("Filling database...")
         add_all_facts_to_db(facts, DB)
+        current_app.logger.info("Initialization done")
         return "Initialization done"
     return redirect(url_for("homepage.home"))
 
