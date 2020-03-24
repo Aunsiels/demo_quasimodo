@@ -19,7 +19,8 @@ RUN pip3 install \
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
-    DATABASE_URL=postgresql+psycopg2://postgres:root@db:5432/postgres
+    DATABASE_URL=postgresql+psycopg2://postgres:root@db:5432/postgres \
+    REDIS_URL=redis://redis:6379/0
 
 EXPOSE 5000
 

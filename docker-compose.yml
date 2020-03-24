@@ -13,10 +13,24 @@ services:
             dockerfile: WebsiteDockerfile
         depends_on:
             - db
+            - redis
         ports:
             - 8080:8080
         volumes:
             - logs:/logs
+    redis:
+        image: redis
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+          - redis-data:/data
+    quasimodo_tasks:
+        image: quasimodo_tasks
+        depends_on:
+            - redis
+        volumes:
+            - quasimodo_data:/quasimodo_data
 volumes:
     pgdata:
     logs:
+    quasimodo_data:
+    redis-data:
