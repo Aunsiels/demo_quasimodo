@@ -140,6 +140,13 @@ def read_facts_from_file(fact_file):
     return facts
 
 
-def add_all_facts_to_db(facts, database):
-    database.session.add_all(facts)
-    database.session.commit()
+def add_all_facts_to_db(facts, database, limit_insert=-1):
+    if limit_insert <= 0:
+        database.session.add_all(facts)
+        database.session.commit()
+    else:
+        current = 0
+        while current < len(facts):
+            database.session.add_all(facts[current: current + limit_insert])
+            database.session.commit()
+            current += limit_insert

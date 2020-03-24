@@ -33,7 +33,7 @@ def initialize():
         current_app.logger.info("Reading facts...")
         facts = read_facts_from_file(file)
         current_app.logger.info("Filling database...")
-        add_all_facts_to_db(facts, DB)
+        add_all_facts_to_db(facts, DB, limit_insert=10000)
         current_app.logger.info("Initialization done")
         return "Initialization done"
     return redirect(url_for("homepage.home"))
