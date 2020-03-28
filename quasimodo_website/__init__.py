@@ -17,6 +17,7 @@ from quasimodo_website.homepage.blueprint import BP as BP_HOMEPAGE
 from quasimodo_website.explorer.blueprint import BP as BP_EXPLORER
 from quasimodo_website.taboo.blueprint import BP as BP_TABOO
 from quasimodo_website.tasks.blueprint import BP as BP_TASKS
+from quasimodo_website.codenames.blueprint import BP as BP_CODENAMES
 from quasimodo_website.models import create_all_db
 
 
@@ -36,6 +37,7 @@ def create_app(testing=False):
     app.register_blueprint(BP_EXPLORER, url_prefix='/explorer')
     app.register_blueprint(BP_TABOO, url_prefix='/taboo')
     app.register_blueprint(BP_TASKS, url_prefix='/tasks')
+    app.register_blueprint(BP_CODENAMES, url_prefix="/codenames")
     logger = create_logger(app)
     if testing:
         logger.setLevel(logging.DEBUG)

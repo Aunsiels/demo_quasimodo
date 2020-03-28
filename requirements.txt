@@ -5,6 +5,7 @@ flask-sqlalchemy
 flask-testing
 flask-wtf
 flask_fontawesome
+gensim
 pycodestyle
 pylint
 pylint-flask
@@ -18,4 +19,5 @@ rq
 redis
 requests
 selenium
+spacy
 wheel
