@@ -1,3 +1,4 @@
+Werkzeug==0.16.0
 flask
 flask-bootstrap4
 flask-migrate
