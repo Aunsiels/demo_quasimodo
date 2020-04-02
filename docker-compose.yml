@@ -29,6 +29,12 @@ services:
             - redis
         volumes:
             - quasimodo_data:/quasimodo_data
+    oxigraph:
+        build:
+            context: .
+            dockerfile: OxigraphDockerfile
+        ports:
+            - 7878:7878
 volumes:
     pgdata:
     logs:

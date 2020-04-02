@@ -1,0 +1,24 @@
+FROM rust:latest
+
+RUN apt update -yqq \
+    && apt upgrade -yqq \
+    && apt install -y clang git curl \
+    && rm -rf /var/lib/apt/lists/*  
+
+RUN rustup update
+
+EXPOSE 7878
+
+RUN mkdir /data
+
+RUN git clone https://github.com/Tpt/oxigraph \
+    && cd oxigraph \
+    && cargo build --release
+
+COPY quasimodo.nt /
+
+RUN oxigraph/target/release/oxigraph_server -f /data/oxigraph_data & curl -X POST http://localhost:7878/ -H 'Content-Type:application/n-triples' --data-binary "@quasimodo.nt"
+
+RUN rm quasimodo.nt
+
+CMD oxigraph/target/release/oxigraph_server -f /data/oxigraph_data -b 0.0.0.0:7878
