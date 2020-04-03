@@ -46,9 +46,11 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 ENV GENSIM_DATA_DIR=/gensim_data
-
-RUN mkdir $GENSIM_DATA_DIR
+ 
+RUN mkdir $GENSIM_DATA_DIR 
 
 RUN python3 -m gensim.downloader --download "glove-wiki-gigaword-50"
+
+RUN chmod -R 777 $GENSIM_DATA_DIR
 
 RUN mkdir /.cache && mkdir /.cache/dconf && chmod -R 777 /.cache/dconf

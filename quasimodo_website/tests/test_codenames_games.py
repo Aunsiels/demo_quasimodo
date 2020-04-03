@@ -10,7 +10,7 @@ from quasimodo_website.tests.test_codenames import FILENAME
 class TestCodenamesGames(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.codenames = Codenames(FILENAME)
+        self.codenames = Codenames.from_filename(FILENAME)
 
     def test_one_vector_player(self):
         game_master = CodenamesMaster(
