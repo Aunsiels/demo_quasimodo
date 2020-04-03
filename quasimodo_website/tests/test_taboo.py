@@ -1,5 +1,7 @@
 import json
+import time
 
+from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.common.keys import Keys
 
 from quasimodo_website import DB
@@ -141,8 +143,13 @@ class TestTaboo(BrowserTest):
         input_text.send_keys(Keys.ENTER)
 
     def get_chat(self):
-        messages_li = self.browser.find_elements_by_xpath("//ul[@id='chat-list']//li")
-        chat = [message.text for message in messages_li]
+        while True:
+            try:
+                messages_li = self.browser.find_elements_by_xpath("//ul[@id='chat-list']//li")
+                chat = [message.text for message in messages_li]
+                break
+            except StaleElementReferenceException:
+                time.sleep(1)
         return chat
 
     def test_give_in_chat_word_to_guess(self):

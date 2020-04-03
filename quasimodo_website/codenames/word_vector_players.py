@@ -27,12 +27,15 @@ class WordVectorOperative(Operative):
         best_word = None
         best_similarity = -2
         for word in remaining_words:
-            similarity = word_vectors.similarity(
-                word.lower(),
-                self.last_given_word)
-            if similarity > best_similarity:
-                best_word = word
-                best_similarity = similarity
+            try:
+                similarity = word_vectors.similarity(
+                    word.lower(),
+                    self.last_given_word)
+                if similarity > best_similarity:
+                    best_word = word
+                    best_similarity = similarity
+            except KeyError:
+                pass
         self.n_remaining -= 1
         print("Guessed:", best_word)
         return best_word
@@ -69,8 +72,12 @@ class WordVectorSpyMaster(SpyMaster):
 
         similarities = [dict() for _ in range(len(word_vectors.vocab))]
         for word in good_words + bad_words:
-            for i, similarity in enumerate(
-                    word_vectors.most_similar(positive=[word], topn=None)):
+            try:
+                similarities_temp = enumerate(
+                    word_vectors.most_similar(positive=[word], topn=None))
+            except KeyError:
+                similarities_temp = [(i, -1) for i in range(len(similarities))]
+            for i, similarity in similarities_temp:
                 similarities[i][word] = similarity
 
         best_i = 0
@@ -78,10 +85,13 @@ class WordVectorSpyMaster(SpyMaster):
         best_similarity = -2
         for i in range(1, min(MAX_GROUP, len(good_words) + 1)):
             for r_c in combinations(good_words, i):
-                similarities_temp = [
-                    word_vectors.most_similar(positive=[word], topn=None)
-                    for word in r_c
-                ]
+                similarities_temp = []
+                for word in r_c:
+                    try:
+                        similarities_temp.append(word_vectors.most_similar(
+                            positive=[word], topn=None))
+                    except KeyError:
+                        pass
                 similarities_temp = np.array(similarities_temp)
                 if i > 1:
                     similarities_temp = np.min(np.array(similarities_temp),
