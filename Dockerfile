@@ -45,6 +45,6 @@ COPY requirements.txt requirements.txt
 
 RUN pip3 install -r requirements.txt
 
-RUN python3 -c 'import gensim.downloader as api; word_vectors = api.load("glove-wiki-gigaword-50")'
+RUN python3 -m gensim.downloader --download "glove-wiki-gigaword-50"
 
 RUN mkdir /.cache && mkdir /.cache/dconf && chmod -R 777 /.cache/dconf
