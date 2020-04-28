@@ -1,0 +1,26 @@
+<div class="row">
+
+    {% for word in codenames.words %}
+
+        {% if word in codenames.red_cards %}
+            <div class="card text-white bg-danger mb-3 col-2"
+                 style="min-width: 12rem;">
+        {% elif word in codenames.blue_cards %}
+            <div class="card text-white bg-primary mb-3 col-2" style="min-width: 12rem;">
+        {% elif word == codenames.assassin_card %}
+            <div class="card text-white bg-dark mb-3 col-2" style="min-width: 12rem;">
+        {% else %}
+            <div class="card bg-light mb-3 col-2" style="min-width: 12rem;">
+        {% endif %}
+
+
+          <div class="card-body">
+              <h5 class="card-title"><a
+                      style="text-decorations:none; color:inherit;"
+                      href="{{ url_for('codenames.guess_word', word=word) }}">{{ word }}</a></h5>
+          </div>
+        </div>
+
+    {% endfor %}
+
+</div>

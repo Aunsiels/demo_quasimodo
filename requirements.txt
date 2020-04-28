@@ -7,6 +7,8 @@ flask-testing
 flask-wtf
 flask_fontawesome
 gensim
+nltk
+pandas
 pycodestyle
 pylint
 pylint-flask
@@ -20,5 +22,7 @@ rq
 redis
 requests
 selenium
+simplejson
+sklearn
 spacy
 wheel

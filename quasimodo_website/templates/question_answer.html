@@ -1,0 +1,37 @@
+{% extends "homepage.html" %}
+
+{% block inner_content %}
+
+<div class="container">
+    {{ question }}
+    <br>
+    {% if answer0 == solution %}
+        <b>{{ answer0 }}</b>
+    {% else %}
+        {{ answer0 }}
+    {% endif %}
+    <br>
+    {% if answer1 == solution %}
+        <b>{{ answer1 }}</b>
+    {% else %}
+        {{ answer1 }}
+    {% endif %}
+    <br>
+    {% if answer2 == solution %}
+        <b>{{ answer2 }}</b>
+    {% else %}
+        {{ answer2 }}
+    {% endif %}
+    <br>
+    {% if answer3 == solution %}
+        <b>{{ answer3 }}</b>
+    {% else %}
+        {{ answer3 }}
+    {% endif %}
+    <br>
+</div>
+
+
+
+
+{% endblock %}

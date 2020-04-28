@@ -1,7 +1,6 @@
 Acne
 Acre
 Addendum
-Advertise
 Aircraft
 Aisle
 Alligator
@@ -14,7 +13,6 @@ Archaeologist
 Aristocrat
 Arm
 Armada
-Asleep
 Astronaut
 Athlete
 Atlantis
@@ -40,7 +38,6 @@ Beethoven
 Belt
 Bib
 Bicycle
-Big
 Bike
 Billboard
 Bird
@@ -52,7 +49,6 @@ Bleach
 Blimp
 Blossom
 Blueprint
-Blunt
 Blur
 Boa
 Boat
@@ -145,7 +141,6 @@ Cowboy
 Crayon
 Cream
 Crisp
-Criticize
 Crow
 Cruise
 Crumb
@@ -165,8 +160,6 @@ Dentist
 Desk
 Dictionary
 Dimple
-Dirty
-Dismantle
 Ditch
 Diver
 Doctor
@@ -182,7 +175,6 @@ Dream
 Dress
 Drink
 Drip
-Drums
 Dryer
 Duck
 Dump
@@ -199,7 +191,6 @@ Elf
 Elm
 Engine
 England
-Ergonomic
 Escalator
 Eureka
 Europe
@@ -233,7 +224,6 @@ Fog
 Foil
 Football
 Forehead
-Forever
 Fortnight
 France
 Freckle
@@ -250,7 +240,6 @@ Gem
 Ginger
 Gingerbread
 Girl
-Glasses
 Goblin
 Gold
 Goodbye
@@ -262,7 +251,6 @@ Gray
 Green
 Guitar
 Gum
-Gumball
 Hair
 Half
 Handle
@@ -288,24 +276,20 @@ Hot
 House
 Houseboat
 Hug
-Humidifier
 Hungry
 Hurdle
 Hurt
 Hut
 Ice
-Implode
 Inn
 Inquisition
 Intern
 Internet
 Invitation
-Ironic
 Ivory
 Ivy
 Jade
 Japan
-Jeans
 Jelly
 Jet
 Jig
@@ -341,7 +325,6 @@ Level
 Lifestyle
 Ligament
 Light
-Lightsaber
 Lime
 Lion
 Lizard
@@ -352,13 +335,11 @@ Loveseat
 Loyalty
 Lunch
 Lunchbox
-Lyrics
 Machine
 Macho
 Mailbox
 Mammoth
 Mark
-Mars
 Mascot
 Mast
 Matchstick
@@ -388,7 +369,6 @@ Mud
 Music
 Mute
 Nature
-Negotiate
 Neighbor
 Nest
 Neutron
@@ -402,12 +382,9 @@ Office
 Oil
 Old
 Olympian
-Opaque
 Opener
 Orbit
 Organ
-Organize
-Outer
 Outside
 Ovation
 Overture
@@ -415,7 +392,6 @@ Pail
 Paint
 Pajamas
 Palace
-Pants
 Paper
 Paper
 Park
@@ -465,7 +441,6 @@ Portfolio
 Positive
 Post
 Princess
-Procrastinate
 Protestant
 Psychologist
 Publisher
@@ -484,13 +459,10 @@ Raft
 Rag
 Rainbow
 Rainwater
-Random
 Ray
-Recycle
 Red
 Regret
 Reimbursement
-Retaliate
 Rib
 Riddle
 Rim
@@ -508,12 +480,10 @@ Safe
 Salmon
 Salt
 Sandbox
-Sandcastle
 Sandwich
 Sash
 Satellite
 Scar
-Scared
 School
 Scoundrel
 Scramble
@@ -521,14 +491,12 @@ Scuff
 Seashell
 Season
 Sentence
-Sequins
 Set
 Shaft
 Shallow
 Shampoo
 Shark
 Sheep
-Sheets
 Sheriff
 Shipwreck
 Shirt
@@ -547,7 +515,6 @@ Ski
 Slam
 Sleep
 Sling
-Slow
 Slump
 Smith
 Sneeze
@@ -556,7 +523,6 @@ Snuggle
 Song
 Space
 Spare
-Speakers
 Spider
 Spit
 Sponge
@@ -567,7 +533,6 @@ Sprinkler
 Spy
 Square
 Squint
-Stairs
 Standing
 Star
 State
@@ -579,7 +544,6 @@ Stove
 Stowaway
 Straw
 Stream
-Streamline
 Stripe
 Student
 Sun
@@ -602,15 +566,12 @@ Tennis
 Thief
 Think
 Throne
-Through
 Thunder
 Tide
 Tiger
 Time
 Tinting
 Tiptoe
-Tiptop
-Tired
 Tissue
 Toast
 Toilet
@@ -632,7 +593,6 @@ Tutor
 Television
 Twang
 Twig
-Twitterpated
 Type
 Unemployed
 Upgrade

@@ -143,13 +143,15 @@ class TestTaboo(BrowserTest):
         input_text.send_keys(Keys.ENTER)
 
     def get_chat(self):
-        while True:
+        counter = 0
+        while counter < 10:
             try:
                 messages_li = self.browser.find_elements_by_xpath("//ul[@id='chat-list']//li")
                 chat = [message.text for message in messages_li]
                 break
             except StaleElementReferenceException:
                 time.sleep(1)
+                counter += 1
         return chat
 
     def test_give_in_chat_word_to_guess(self):

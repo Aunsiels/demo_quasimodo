@@ -1,0 +1,22 @@
+{% extends "homepage.html" %}
+
+{% block inner_content %}
+
+<div class="container" id="cards-codenames">
+
+    <p>{{ message }}</p>
+
+    <p><a href="{{ url_for('codenames.home') }}">New Game</a></p>
+
+    {% include '_spy_codenames.html' %}
+
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+
+    {{super()}}
+
+{% endblock %}

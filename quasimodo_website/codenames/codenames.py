@@ -42,11 +42,9 @@ class Codenames:
             "assassin_card": self.assassin_card,
             "guessed_words": self.guessed_words,
             "has_played_already": self.has_played_already,
-            "current_player":
-                "RED"
-                if self.current_player == CodenameColor.RED
-                else "BLUE",
-            "winner": self.winner
+            "current_player": self.current_player.name,
+            "winner": self.winner.name if self.winner is not None else
+                self.winner
         }
         return json.dumps(dict_repr)
 
@@ -144,10 +142,12 @@ class Codenames:
             self.red_cards_remaining.remove(word)
             if color == CodenameColor.BLUE:
                 self.current_player = CodenameColor.RED
+                self.has_played_already = False
         if word in self.blue_cards_remaining:
             self.blue_cards_remaining.remove(word)
             if color == CodenameColor.RED:
                 self.current_player = CodenameColor.BLUE
+                self.has_played_already = False
         if word == self.assassin_card:
             self.found_assassin = True
             if color == CodenameColor.RED:
@@ -225,10 +225,14 @@ class Codenames:
         self.guessed_words = dict_repr["guessed_words"]
         self.has_played_already = dict_repr["has_played_already"]
         self.current_player = \
-            CodenameColor.RED\
-            if dict_repr["current_player"] == "RED"\
-            else CodenameColor.BLUE
+            CodenameColor.RED \
+                if dict_repr["current_player"] == "RED" \
+                else CodenameColor.BLUE
         self.winner = dict_repr["winner"]
+        if self.winner == "RED":
+            self.winner = CodenameColor.name
+        elif self.winner == "BLUE":
+            self.winner = CodenameColor.BLUE
         self.red_cards_remaining = [x for x in self.red_cards
                                     if x not in self.guessed_words]
         self.blue_cards_remaining = [x for x in self.blue_cards
