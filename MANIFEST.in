@@ -1,5 +1,6 @@
 include quasimodo_website/logging.cfg 
 include quasimodo_website/question_answering/classifier_lr.pck
+include quasimodo_website/tests/codenames_words.txt
 graft quasimodo_website/templates
 graft quasimodo_website/static
 global-exclude *.pyc
