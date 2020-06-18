@@ -8,5 +8,24 @@
                 {{ wtf.quick_form(form) }}
             </div>
         </div>
+        <br>
+        <div class="row">
+            <h2>Examples</h2>
+        </div>
+        <div class="row">
+            <ul>
+                <li><a href="{{ url_for('question_answering.question_page', question='What is the color of the sky?', answer0='green', answer1='blue', answer2='red', answer3='black') }}">What is the color of the sky?</a></li>
+                <li><a href="{{ url_for('question_answering.question_page', question='With a microscope, you see that an object has a cell wall, a chloroplast, and a nucleus. What is being observed?', answer0='a plant cell', answer1='an elephant cell', answer2='a male organism', answer3='a female organism') }}">With a microscope, you see that an object has a cell wall, a chloroplast, and a nucleus. What is being observed?</a></li>
+                <li><a href="{{ url_for('question_answering.question_page', question='Why are elephants hunted?', answer0='skin', answer1='foot', answer2='tusk', answer3='tail') }}">Why are elephants hunted?</a></li>
+                <li><a href="{{ url_for('question_answering.question_page', question='Which city is called the city of love?', answer0='london', answer1='paris', answer2='berlin', answer3='new york') }}">Which city is called the city of love?</a></li>
+                <li><a href="{{ url_for('question_answering.question_page', question='Who use magic?', answer0='donald trump', answer1='hermione', answer2='mickey mouse', answer3='emmanuel macron') }}">Who use magic?</a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <br><h2>Description</h2>
+            <br>
+            As in the original paper, we added the possibility to perform question answering using only Quasimodo, i.e. we do not have an underlying language model. We used the same algorithm: Given a question, an answer and a knowledge base, we generate a set of features based on the connections between the words in the knowledge graph. Then, using the same training data as in Quasimodo, we train a linear classifier to predict a score for each answer. We reused the code provided with Quasimodo and added an interface to ask a question and give possible answers. Then, the system provides a score for each answer and displays them.
+        </div>
+
     </div>
 {% endblock %}

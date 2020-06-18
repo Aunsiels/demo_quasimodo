@@ -3,32 +3,59 @@
 {% block inner_content %}
 
 <div class="container">
-    {{ question }}
-    <br>
-    {% if answer0 == solution %}
-        <b>{{ answer0 }}</b>
-    {% else %}
-        {{ answer0 }}
-    {% endif %}
-    <br>
-    {% if answer1 == solution %}
-        <b>{{ answer1 }}</b>
-    {% else %}
-        {{ answer1 }}
-    {% endif %}
-    <br>
-    {% if answer2 == solution %}
-        <b>{{ answer2 }}</b>
-    {% else %}
-        {{ answer2 }}
-    {% endif %}
-    <br>
-    {% if answer3 == solution %}
-        <b>{{ answer3 }}</b>
-    {% else %}
-        {{ answer3 }}
-    {% endif %}
-    <br>
+    <div class="row">
+        <h2>{{ question }}</h2>
+        <br>
+    </div>
+    <div class="row">
+        <ul>
+            <li>
+            {% if answer0 == solution %}
+                <b>{{ answer0 }}</b>
+            {% else %}
+                {{ answer0 }}
+            {% endif %}
+            </li>
+            <li>
+            {% if answer1 == solution %}
+                <b>{{ answer1 }}</b>
+            {% else %}
+                {{ answer1 }}
+            {% endif %}
+            </li>
+            <li>
+            {% if answer2 == solution %}
+                <b>{{ answer2 }}</b>
+            {% else %}
+                {{ answer2 }}
+            {% endif %}
+            </li>
+            <li>
+            {% if answer3 == solution %}
+                <b>{{ answer3 }}</b>
+            {% else %}
+                {{ answer3 }}
+            {% endif %}
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <br>
+        <br>
+        <h2>Possible Explanations (normalised triples)</h2>
+        <br>
+    </div>
+    <div class="row">
+        <ul>
+            {% for triple in explanations %}
+                <li>{{ triple[0][0] }}, {{ triple[0][1] }}, {{ triple[0][2] }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="row">
+        <br>
+        <a href="{{ url_for('question_answering.question_page') }}">Ask Another Question</a>
+    </div>
 </div>
 
 

@@ -36,6 +36,7 @@ class MachineLearningSolver:
         self.kb_grouped_o = None
         self.spacy_accessor = SpacyAccessor()
         self.clf = None
+        self.by_fact_result = dict()
 
     def preprocess(self):
         self.load_kb()
@@ -58,10 +59,10 @@ class MachineLearningSolver:
         for line in raw_lemmatized_triples:
             line = " ".join(line)
             line = line.strip().split("\t")
-            subj = line[0].strip()
-            pred = line[1].strip()
+            subj = " ".join(remove_stop_words(line[0].strip()))
+            pred = " ".join(remove_stop_words(line[1].strip()))
             if len(line) > 2:
-                obj = line[2].strip()
+                obj = " ".join(remove_stop_words(line[2].strip()))
             else:
                 obj = ""
             kb.append([subj, pred, obj])
@@ -117,16 +118,27 @@ class MachineLearningSolver:
         p_with_s = 0
         o_with_s = 0
         double_link_s_to_o = 0
+        by_fact = dict()
 
         if answer in self.kb_grouped_s.groups:
             for _, row in self.kb_grouped_s.get_group(answer).iterrows():
+                triple = (row["subject"], row["predicate"], row["object"])
                 if check_in(row["predicate"], question):
                     if check_in(row["object"], question):
                         p_and_o_with_s += row["score"]
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
+                        by_fact[triple][0] += row["score"]
                     else:
                         p_with_s += row["score"]
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
+                        by_fact[triple][3] += row["score"]
                 elif check_in(row["object"], question):
                     o_with_s += row["score"]
+                    if triple not in by_fact:
+                        by_fact[triple] = np.zeros(11, dtype=np.float64)
+                    by_fact[triple][4] += row["score"]
 
         s_and_o_with_p = 0
         s_with_p = 0
@@ -134,13 +146,23 @@ class MachineLearningSolver:
 
         if answer in self.kb_grouped_p.groups:
             for _, row in self.kb_grouped_p.get_group(answer).iterrows():
+                triple = (row["subject"], row["predicate"], row["object"])
                 if check_in(row["subject"], question):
                     if check_in(row["object"], question):
                         s_and_o_with_p += row["score"]
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
+                        by_fact[triple][1] += row["score"]
                     else:
                         s_with_p += row["score"]
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
+                        by_fact[triple][5] += row["score"]
                 elif check_in(row["object"], question):
                     o_with_p += row["score"]
+                    if triple not in by_fact:
+                        by_fact[triple] = np.zeros(11, dtype=np.float64)
+                    by_fact[triple][6] += row["score"]
 
         s_and_p_with_o = 0
         s_with_o = 0
@@ -149,15 +171,24 @@ class MachineLearningSolver:
 
         if answer in self.kb_grouped_o.groups:
             for _, row in self.kb_grouped_o.get_group(answer).iterrows():
+                triple = (row["subject"], row["predicate"], row["object"])
                 if check_in(row["subject"], question):
                     if check_in(row["predicate"], question):
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
                         s_and_p_with_o += row["score"]
+                        by_fact[triple][2] += row["score"]
                     else:
                         s_with_o += row["score"]
+                        if triple not in by_fact:
+                            by_fact[triple] = np.zeros(11, dtype=np.float64)
+                        by_fact[triple][7] += row["score"]
                 elif check_in(row["predicate"], question):
                     p_with_o += row["score"]
-
-        return np.array([p_and_o_with_s,
+                    if triple not in by_fact:
+                        by_fact[triple] = np.zeros(11, dtype=np.float64)
+                    by_fact[triple][8] += row["score"]
+        res = np.array([p_and_o_with_s,
                          s_and_o_with_p,
                          s_and_p_with_o,
                          p_with_s,
@@ -167,28 +198,34 @@ class MachineLearningSolver:
                          s_with_o,
                          p_with_o,
                          double_link_s_to_o,
-                         double_link_o_to_s])
+                         double_link_o_to_s]).astype(np.float64)
+        return res, by_fact
 
     def get_features_grouped_preprocessed(self, question, answer):
         question_lemmatized = " ".join(question)
         answer_lemmatized_split = answer
         result = None
+        by_fact_result = dict()
         max_size = min(len(answer_lemmatized_split), 3)
         for size in range(max_size, 0, -1):
-            for i in range(len(answer_lemmatized_split)):
+            for i in range(len(answer_lemmatized_split) - size + 1):
                 j = i + size
-                to_add = self.get_features_lemmatized(question_lemmatized,
-                                                      " ".join(
-                                                          answer_lemmatized_split[
-                                                          i:j])).astype(
-                    np.float64)
+                to_add, by_fact = self.get_features_lemmatized(
+                    question_lemmatized,
+                    " ".join(answer_lemmatized_split[i:j]))
                 to_add[np.isnan(to_add)] = 0.0
                 if result is None:
                     result = to_add
                 else:
                     result += to_add
+                for key, value in by_fact.items():
+                    if key in by_fact_result:
+                        by_fact_result[key] += value
+                    else:
+                        by_fact_result[key] = value
             if result is not None:
                 break
+        self.by_fact_result[" ".join(answer)] = by_fact_result
         if result is None:
             return [0.0] * 11
         return list(result)
@@ -232,6 +269,7 @@ class MachineLearningSolver:
     def answer_question(self,
                         question: MultipleChoiceQuestion) -> MultipleChoiceAnswer:
         # pylint: disable=unused-variable
+        self.by_fact_result = dict()
         if self.clf is None:
             self.load_model()
         if self.kb_grouped_s is None:
@@ -264,6 +302,21 @@ class MachineLearningSolver:
         X = np.array(features)
         y_prediction = self.clf.predict_proba(X)[:, 1]
         return y_prediction
+
+    def explain(self, answer):
+        answer = " ".join(self.spacy_accessor.lemmatize(
+            " ".join(remove_stop_words(answer))))
+        if answer not in self.by_fact_result:
+            return []
+        by_fact = self.by_fact_result[answer]
+        idx_to_fact = list(by_fact.keys())
+        features = [list(by_fact[key]) for key in idx_to_fact]
+        if not features:
+            return []
+        X = np.array(features)
+        y_prediction = self.clf.predict_proba(X)[:, 1]
+        fact_score = zip(idx_to_fact, y_prediction)
+        return sorted(fact_score, key=lambda x: -x[1])
 
 
 stop_words = set(stopwords.words('english'))

@@ -30,21 +30,18 @@
                 <a class="dropdown-item" href="/query">Endpoint</a>
             </div>
         </li>
-        <li class="nav-item"><a class="nav-link"
-                                href="{{ url_for('codenames.home') }}">Codenames
-        </a></li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Play Taboo
+              Use Cases
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{{ url_for('taboo.home') }}">Play</a>
-                <a class="dropdown-item" href="{{ url_for('taboo.generate_card') }}">Generate Card</a>
+                <a class="dropdown-item" href="{{ url_for('taboo.home') }}">Play Taboo </a>
+                <a class="dropdown-item" href="{{ url_for('taboo.generate_card') }}">Generate Taboo Card</a>
+                <a class="dropdown-item" href="{{ url_for('codenames.home') }}">Codenames</a>
+                <a class="dropdown-item" href="{{ url_for('question_answering.question_page') }}">Question Answering</a>
             </div>
         </li>
-        <li class="nav-item"><a class="nav-link"
-                                href="{{ url_for('question_answering.question_page') }}">Question Answering</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ url_for('tasks.home') }}">Pipeline Examples</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('tasks.home') }}">Live Pipeline Examples</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('homepage.publications') }}">Publications</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ url_for('homepage.contributors') }}">Contributors</a></li>
     </ul>

@@ -10,6 +10,16 @@
 
     {% include '_anonymous_codenames.html' %}
 
+    <br>
+    <br>
+    <h2>Description</h2><br>
+    Codenames is a game designed by Vlaada Chvátil. It opposes two teams that must find their special agent before the other team. The agents are hidden behind codenames, which are simple words. Each team has a spymaster which must give a clue to the rest of the team (the operatives) to help us reveal the spies. For example, a spymaster can say <i>blue, 2</i> to help its companion guess the words <i>sky</i> and <i>sea</i>. The choice of the word must be made very carefully not to discover the agents of the other team.
+    <br>
+    In 2019, the Foundation of Digital Games conference hosted a competition: <a href="https://sites.google.com/view/the-codenames-ai-competition">The Codenames AI competition</a>. However, we were not able to find the results of this competition. The presenters suggested that people should use word embeddings. This solution can be powerful when we make AI play against each other. However, the clues can become incomprehensible for humans.
+    <br>
+Instead, we propose a solution based on Quasimodo to generate clues. We consider that the words to guess are subjects. Then, we take the object associated with the more subjects that has a score above a certain threshold and does not appear for the wrong subjects.
+<br>
+In the demonstration scenario, the user plays the role of the operative. He receives clues and must click on the potential agents. He plays against a bot which simply guesses one right word per turn. Vlaada Chvátil suggests this strategy for games with two players.
 
 </div>
 

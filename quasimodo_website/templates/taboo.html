@@ -2,7 +2,7 @@
 
 {% block inner_content %}
 
-<div class="container">
+<div class="container" onload="load_new_card('{{ url_for('taboo.start_new_game') }}')">
 
     <div class="row">
         <div class="col" align="center">
@@ -47,6 +47,16 @@
             <button type="button" class="btn btn-dark" onclick="load_new_card('{{ url_for('taboo.start_new_game') }}')" id="new-game">New Game</button>
             <button type="button" class="btn btn-dark" onclick="try_to_guess('{{ url_for('taboo.guess_word') }}')" id="guess-word">Guess Word</button>
         </div>
+    </div>
+    <div class="row">
+        <br>
+        <h2>Description</h2>
+        <br>
+        Taboo is a game in which a player must make other players guess a word without using a list of forbidden words. In this demo, we provide an interface to play Taboo with Quasimodo. When a user starts a new game, the web portal sends him a card. Then they must use a chat interface to give clue words to Quasimodo. Every time the user presses the Make a Guess button, the system tries to a find a relevant word.
+        <br>
+The algorithm used in the back end is simple. First, the database is filtered using the words given by the user. Then, we group the results by subjects, and we aggregate the scores using a sum or a max function, for example. We finally return the best subject, under the condition that we never tried it before.
+<br>
+In addition to this game, we also provide the functionality to generate Taboo cards for any subject. We perform this generation by taking the most relevant objects associated with a subject by combining the scores.
     </div>
 
 </div>
